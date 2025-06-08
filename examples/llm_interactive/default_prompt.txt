@@ -1,3 +1,0 @@
-Classify text into different categories. Start each category prediction in a new line.
-Text: {text}
-Categories: {labels}

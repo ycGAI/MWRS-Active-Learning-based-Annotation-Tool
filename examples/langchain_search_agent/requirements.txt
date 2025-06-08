@@ -1,5 +1,0 @@
-langchain
-langchain_community
-google-api-python-client
-openai
-

@@ -1,4 +1,0 @@
-gliner==0.2.16
-torch==2.3.0
-accelerate>=0.26.0
-

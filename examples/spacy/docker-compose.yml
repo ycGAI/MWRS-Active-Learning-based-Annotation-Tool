@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  spacy:
+    container_name: spacy
+    image: heartexlabs/label-studio-ml-backend:spacy-master
+    init: true
+    build: .
+    environment:
+      # specify the spacy model to use
+      - SPACY_MODEL=en_core_web_sm
+      # specify these parameters if you want to use basic auth for the model server
+      - BASIC_AUTH_USER=
+      - BASIC_AUTH_PASS=
+      # set the log level for the model server
+      - LOG_LEVEL=DEBUG
+      # specify the number of workers and threads for the model server
+      - WORKERS=1
+      - THREADS=8
+      # specify the model directory (likely you don't need to change this)
+      - MODEL_DIR=/data/models
+    volumes:
+      - "./data:/data"
+    ports:
+      - "9090:9090"

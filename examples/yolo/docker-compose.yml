@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  yolo:
+    build: .
+    image: heartexlabs/label-studio-ml-backend:yolo
+    container_name: yolo
+    ports:
+      - "9090:9090"
+    environment:
+      - MODEL_DIR=/app/models
+      - LABEL_STUDIO_URL=${LABEL_STUDIO_URL:-http://host.docker.internal:8081}
+      - LABEL_STUDIO_API_KEY=${LABEL_STUDIO_API_KEY:-}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      # 挂载模型目录，保持微调后的模型
+      - ./models:/app/models
+      # 挂载训练数据目录，保持训练数据
+      - ./training_data:/app/training_data
+      # 挂载缓存目录
+      - ./cache:/app/cache
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9090/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

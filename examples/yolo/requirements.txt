@@ -1,0 +1,23 @@
+# 基础依赖（保持原有）
+label-studio-ml @ git+https://github.com/HumanSignal/label-studio-ml-backend.git
+ultralytics>=8.0.0
+torch>=1.13.0
+torchvision>=0.14.0
+opencv-python-headless>=4.5.0
+Pillow>=8.3.0
+
+# 修复NumPy版本兼容性
+numpy<2.0.0
+
+# 添加缺失的依赖
+torchmetrics>=0.10.0
+
+# 微调训练额外依赖
+PyYAML>=6.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
+tensorboard>=2.8.0
+clearml>=1.6.0
+
+# 性能优化
+psutil>=5.8.0

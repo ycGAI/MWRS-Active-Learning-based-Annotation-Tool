@@ -94,3 +94,5 @@ http://172.17.0.1:9090)
 if the first URL don't work, try the following two
 No Authentication
 Interactive preannotations
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6ODA1ODY2NTQyNywiaWF0IjoxNzUxNDY1NDI3LCJqdGkiOiIwZjYxMDZlZTA5YjM0NjdiOGVjOTFmYWM2OTFlOWQ4MSIsInVzZXJfaWQiOjF9.ynCUXzMm2qeB3WhDnLEVav3DQZU9M9DTfbHLgZmkOA0

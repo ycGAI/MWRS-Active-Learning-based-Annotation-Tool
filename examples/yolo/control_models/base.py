@@ -179,7 +179,14 @@ class ControlModel(BaseModel):
             )
         if not isinstance(task_path, str):
             raise ValueError(f"Path should be a string, but got {task_path}")
-
+        
+        # 添加本地路径支持
+        if task_path.startswith("/data/upload/"):
+            local_path = task_path.replace("/data/upload/", "/label-studio/data/media/upload/")
+            if os.path.exists(local_path):
+                logger.debug(f"Using local path: {task_path} => {local_path}")
+                return local_path
+        
         # try path as local file or try to load it from Label Studio instance/download via http
         path = (
             task_path
@@ -188,7 +195,6 @@ class ControlModel(BaseModel):
         )
         logger.debug(f"load_image: {task_path} => {path}")
         return path
-
     def __str__(self):
         """Return a string with full representation of the control tag."""
         return (

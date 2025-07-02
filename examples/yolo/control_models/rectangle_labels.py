@@ -21,7 +21,7 @@ class RectangleLabelsModel(ControlModel):
     """
 
     type = "RectangleLabels"
-    model_path = "yolov8m.pt"
+    model_path = "best.pt"
 
     @classmethod
     def is_control_matched(cls, control) -> bool:

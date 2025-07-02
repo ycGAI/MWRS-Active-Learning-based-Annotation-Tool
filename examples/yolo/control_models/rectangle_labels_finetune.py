@@ -5,7 +5,6 @@ import shutil
 import json
 from pathlib import Path
 from typing import List, Dict, Optional
-from datetime import datetime
 from ultralytics import YOLO
 from control_models.base import ControlModel, get_bool
 from label_studio_sdk.label_interface.control_tags import ControlTag
@@ -17,97 +16,59 @@ logger = logging.getLogger(__name__)
 class RectangleLabelsModelWithFinetune(ControlModel):
     """
     Enhanced RectangleLabels model with fine-tuning capabilities for YOLO
-    支持模型预测后的人工修正和自动fine-tune
     """
 
     type = "RectangleLabels"
-    model_path = "best.pt"  # 默认基础模型
+    model_path = "best.pt"
+    
+    # 声明额外的属性
+    training_data_dir: str = None
+    finetune_model_path: str = None
+    annotation_counter_file: str = None
+    annotation_counter: int = 0
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
-        # 项目相关路径
+        # 为每个项目创建独立的训练目录
         self.project_id = self.label_studio_ml_backend.project_id
         self.training_data_dir = f"/app/training_data/project_{self.project_id}"
-        self.models_dir = f"/app/models/project_{self.project_id}"
-        
-        # 模型版本管理
-        self.base_model_path = f"/app/models/{self.model_path}"
-        self.current_model_path = f"{self.models_dir}/current_model.pt"
-        self.finetune_history_dir = f"{self.models_dir}/history"
-        
-        # 数据统计文件
-        self.stats_file = f"{self.training_data_dir}/training_stats.json"
-        
-        # 初始化
-        self.setup_directories()
-        self.load_training_stats()
-        self.initialize_model()
+        self.finetune_model_path = f"/app/models/finetune_project_{self.project_id}.pt"
+        self.annotation_counter_file = f"{self.training_data_dir}_counter.json"
+        self.setup_training_dirs()
+        self.load_annotation_counter()
 
-    def setup_directories(self):
-        """创建必要的目录结构"""
-        directories = [
-            f"{self.training_data_dir}/images/train",
-            f"{self.training_data_dir}/labels/train",
-            f"{self.training_data_dir}/images/val",
-            f"{self.training_data_dir}/labels/val",
-            f"{self.training_data_dir}/corrections",  # 保存人工修正记录
-            self.models_dir,
-            self.finetune_history_dir,
-            f"/app/models/runs/project_{self.project_id}"
-        ]
-        
-        for directory in directories:
-            os.makedirs(directory, exist_ok=True)
+    def setup_training_dirs(self):
+        """创建训练数据目录结构"""
+        os.makedirs(f"{self.training_data_dir}/images/train", exist_ok=True)
+        os.makedirs(f"{self.training_data_dir}/labels/train", exist_ok=True)
+        os.makedirs(f"{self.training_data_dir}/images/val", exist_ok=True)
+        os.makedirs(f"{self.training_data_dir}/labels/val", exist_ok=True)
+        os.makedirs(f"/app/models/runs/project_{self.project_id}", exist_ok=True)
 
-    def initialize_model(self):
-        """初始化模型（使用当前最佳模型或基础模型）"""
-        if os.path.exists(self.current_model_path):
-            logger.info(f"Loading current fine-tuned model: {self.current_model_path}")
-            self.model = YOLO(self.current_model_path)
-        else:
-            logger.info(f"Loading base model: {self.base_model_path}")
-            self.model = YOLO(self.base_model_path)
-            # 复制基础模型作为当前模型
-            if os.path.exists(self.base_model_path):
-                shutil.copy2(self.base_model_path, self.current_model_path)
-
-    def load_training_stats(self):
-        """加载训练统计信息"""
-        default_stats = {
-            'total_annotations': 0,
-            'total_corrections': 0,
-            'finetune_history': [],
-            'last_finetune_date': None,
-            'model_version': 1,
-            'annotation_history': []
-        }
-        
+    def load_annotation_counter(self):
+        """加载标注计数器"""
         try:
-            if os.path.exists(self.stats_file):
-                with open(self.stats_file, 'r') as f:
-                    self.stats = json.load(f)
-                    # 确保所有必要字段都存在
-                    for key, value in default_stats.items():
-                        if key not in self.stats:
-                            self.stats[key] = value
+            if os.path.exists(self.annotation_counter_file):
+                with open(self.annotation_counter_file, 'r') as f:
+                    data = json.load(f)
+                    self.annotation_counter = data.get('count', 0)
             else:
-                self.stats = default_stats
+                self.annotation_counter = 0
         except Exception as e:
-            logger.error(f"Failed to load stats: {e}")
-            self.stats = default_stats
+            logger.warning(f"Failed to load annotation counter: {e}")
+            self.annotation_counter = 0
 
-    def save_training_stats(self):
-        """保存训练统计信息"""
+    def save_annotation_counter(self):
+        """保存标注计数器"""
         try:
-            with open(self.stats_file, 'w') as f:
-                json.dump(self.stats, f, indent=2)
+            with open(self.annotation_counter_file, 'w') as f:
+                json.dump({'count': self.annotation_counter}, f)
         except Exception as e:
-            logger.error(f"Failed to save stats: {e}")
+            logger.error(f"Failed to save annotation counter: {e}")
 
     @classmethod
     def is_control_matched(cls, control) -> bool:
-        """检查控制标签是否匹配"""
+        """检查控制标签是否匹配并启用了微调功能"""
         if control.objects[0].tag != "Image":
             return False
         if is_obb(control):
@@ -116,17 +77,92 @@ class RectangleLabelsModelWithFinetune(ControlModel):
         is_finetune = get_bool(control.attr, "model_finetune", "false")
         is_rectangle = control.tag == cls.type
         
+        logger.info(f"Control matching - Tag: {control.tag}, Finetune: {is_finetune}, Rectangle: {is_rectangle}")
         return is_rectangle and is_finetune
 
     def predict_regions(self, path) -> List[Dict]:
-        """使用当前最佳模型进行预测"""
-        results = self.model.predict(path)
-        self.debug_plot(results[0].plot())
+        """使用最佳可用模型进行预测"""
+        # 优先使用微调后的模型
+        model_to_use = self.get_best_model()
         
+        results = model_to_use.predict(path)
+        self.debug_plot(results[0].plot())
+
+        # 检查OBB
+        if results[0].obb is not None and results[0].boxes is None:
+            raise ValueError(
+                "Oriented bounding boxes are detected in the YOLO model results. "
+                'However, `model_obb="true"` is not set at the RectangleLabels tag '
+                "in the labeling config."
+            )
+
         return self.create_rectangles(results, path)
 
+    def get_best_model(self):
+        """获取最佳可用模型（微调模型或原始模型）"""
+        if os.path.exists(self.finetune_model_path):
+            logger.info(f"Using fine-tuned model: {self.finetune_model_path}")
+            return YOLO(self.finetune_model_path)
+        else:
+            logger.info(f"Using original model: {self.model_path}")
+            return self.model
+
+    def get_local_image_path(self, image_url, task_id):
+        """获取本地图像路径（支持多种方式）"""
+        logger.info(f"Getting local path for: {image_url}")
+        
+        # 方式1：尝试使用原始方法（如果API可用）
+        try:
+            if hasattr(self.label_studio_ml_backend, 'get_local_path'):
+                local_path = self.label_studio_ml_backend.get_local_path(image_url, task_id=task_id)
+                if os.path.exists(local_path):
+                    logger.info(f"Found via API: {local_path}")
+                    return local_path
+        except Exception as e:
+            logger.debug(f"API method failed: {e}")
+        
+        # 方式2：检查本地挂载的目录
+        if image_url.startswith('/data/upload/'):
+            # 尝试多个可能的挂载路径
+            possible_paths = [
+                f"/label-studio-data{image_url.replace('/data', '')}",  # 去掉/data前缀
+                f"/label-studio-data{image_url}",  # 完整路径（备用）
+                f"/label-studio-data/upload/{os.path.basename(image_url)}",  # 只有文件名（备用）
+            ]
+            
+            for path in possible_paths:
+                if os.path.exists(path):
+                    logger.info(f"Found local file: {path}")
+                    return path
+        
+        # 方式3：如果是HTTP URL，尝试下载
+        if image_url.startswith('http'):
+            try:
+                import requests
+                temp_dir = f"/tmp/ml-backend/task_{task_id}"
+                os.makedirs(temp_dir, exist_ok=True)
+                
+                filename = image_url.split('/')[-1]
+                local_path = os.path.join(temp_dir, filename)
+                
+                if not os.path.exists(local_path):
+                    response = requests.get(image_url, timeout=10)
+                    response.raise_for_status()
+                    
+                    with open(local_path, 'wb') as f:
+                        f.write(response.content)
+                    logger.info(f"Downloaded to: {local_path}")
+                
+                return local_path
+            except Exception as e:
+                logger.error(f"Failed to download: {e}")
+        
+        # 方式4：返回原始URL，让后续处理
+        logger.warning(f"Could not resolve local path for: {image_url}")
+        return image_url
+
     def create_rectangles(self, results, path):
-        """创建矩形标注结果"""
+        """创建矩形标注（与原版相同）"""
         logger.debug(f"create_rectangles: {self.from_name}")
         data = results[0].boxes
         model_names = results[0].names
@@ -137,16 +173,25 @@ class RectangleLabelsModelWithFinetune(ControlModel):
             x, y, w, h = data.xywhn[i].tolist()
             model_label = model_names[int(data.cls[i])]
 
+            logger.debug(
+                "----------------------\n"
+                f"task id > {path}\n"
+                f"type: {self.control}\n"
+                f"x, y, w, h > {x, y, w, h}\n"
+                f"model label > {model_label}\n"
+                f"score > {score}\n"
+            )
+
             # 置信度过滤
             if score < self.model_score_threshold:
                 continue
 
-            # 标签映射
+            # 标签映射检查
             if model_label not in self.label_map:
                 continue
             output_label = self.label_map[model_label]
 
-            # 创建预测区域
+            # 创建区域
             region = {
                 "from_name": self.from_name,
                 "to_name": self.to_name,
@@ -159,120 +204,98 @@ class RectangleLabelsModelWithFinetune(ControlModel):
                     "height": h * 100,
                 },
                 "score": score,
-                "model_version": self.stats['model_version']  # 添加模型版本信息
             }
             regions.append(region)
-            
         return regions
 
     def fit(self, event, data, **kwargs):
-        """处理标注事件并触发fine-tune"""
-        logger.info(f"Fit called with event: {event}")
+        """实现微调训练逻辑"""
+        logger.info(f"Fine-tuning fit called with event: {event}")
         
         if event not in ['ANNOTATION_CREATED', 'ANNOTATION_UPDATED']:
+            logger.info(f"Skipping training for event: {event}")
             return False
 
         try:
+            # 提取任务和标注数据
             task = data.get('task', {})
-            annotations = data.get('annotations', [])
+            
+            # 修复：处理单个annotation
+            annotation = data.get('annotation', {})
+            annotations = [annotation] if annotation else []
             
             if not annotations:
+                logger.warning("No annotations found for training")
                 return False
+
+            logger.info(f"Processing {len(annotations)} annotations for task {task.get('id')}")
 
             # 处理每个标注
+            processed_count = 0
             for annotation in annotations:
-                is_correction = self.is_manual_correction(annotation, task)
-                
-                if self.process_annotation(task, annotation, is_correction):
-                    self.stats['total_annotations'] += 1
-                    if is_correction:
-                        self.stats['total_corrections'] += 1
-                    
-                    # 记录标注历史
-                    self.stats['annotation_history'].append({
-                        'task_id': task.get('id'),
-                        'annotation_id': annotation.get('id'),
-                        'timestamp': datetime.now().isoformat(),
-                        'is_correction': is_correction
-                    })
+                if self.process_annotation(task, annotation):
+                    self.annotation_counter += 1
+                    processed_count += 1
 
-            self.save_training_stats()
-            
-            # 检查是否需要触发fine-tune
-            return self.check_and_trigger_finetune()
+            if processed_count > 0:
+                self.save_annotation_counter()
+                logger.info(f"Processed {processed_count} annotations. Total count: {self.annotation_counter}")
+
+            # 检查是否需要开始微调
+            min_annotations = int(self.control.attr.get("model_min_annotations", "10"))
+            retrain_interval = int(self.control.attr.get("model_retrain_interval", "5"))
+
+            logger.info(f"Training check - Current: {self.annotation_counter}, Min: {min_annotations}, Interval: {retrain_interval}")
+
+            if (self.annotation_counter >= min_annotations and 
+                self.annotation_counter % retrain_interval == 0):
+                
+                logger.info(f"Starting fine-tuning with {self.annotation_counter} annotations")
+                return self.start_finetune()
+            else:
+                logger.info("Not enough annotations or not at training interval")
+                return True
 
         except Exception as e:
-            logger.error(f"Error in fit: {e}", exc_info=True)
+            logger.error(f"Error in fit method: {e}", exc_info=True)
             return False
 
-    def is_manual_correction(self, annotation, task):
-        """判断是否为人工修正的标注"""
-        # 方法1：检查是否有模型预测结果
-        predictions = task.get('predictions', [])
-        if predictions:
-            # 如果存在预测但标注与预测不同，认为是修正
-            for pred in predictions:
-                if pred.get('model_version') == self.stats['model_version']:
-                    # 比较标注和预测的差异
-                    return True
-        
-        # 方法2：检查标注的来源
-        if annotation.get('was_cancelled', False):
-            return False
-            
-        # 方法3：检查标注时间（如果标注在预测之后创建）
-        created_at = annotation.get('created_at')
-        if created_at and predictions:
-            # 实现时间比较逻辑
-            pass
-            
-        return True  # 默认认为是人工标注
-
-    def process_annotation(self, task, annotation, is_correction=False):
-        """处理并保存标注数据"""
+    def process_annotation(self, task, annotation):
+        """处理单个标注并保存训练数据"""
         try:
-            # 获取图像
+            # 获取图像URL
             image_url = task['data'].get('image', '')
             if not image_url:
+                logger.warning("No image URL found in task data")
                 return False
 
-            local_image_path = self.label_studio_ml_backend.get_local_path(
-                image_url, task_id=task['id']
-            )
+            logger.info(f"Processing annotation {annotation.get('id')} for task {task.get('id')}")
 
-            # 生成唯一文件名
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            base_name = f"task_{task['id']}_ann_{annotation['id']}_{timestamp}"
-            
-            # 保存到训练目录
-            train_image_path = f"{self.training_data_dir}/images/train/{base_name}.jpg"
+            # 获取本地图像路径（使用新方法）
+            local_image_path = self.get_local_image_path(image_url, task['id'])
+
+            if not os.path.exists(local_image_path):
+                logger.error(f"Local image path does not exist: {local_image_path}")
+                return False
+
+            # 复制图像到训练目录
+            image_filename = f"task_{task['id']}_ann_{annotation['id']}.jpg"
+            train_image_path = f"{self.training_data_dir}/images/train/{image_filename}"
             shutil.copy2(local_image_path, train_image_path)
 
-            # 生成YOLO格式标签
+            # 生成YOLO格式的标签文件
             label_content = self.convert_annotation_to_yolo(annotation)
             if not label_content:
+                logger.warning(f"No valid labels found for annotation {annotation['id']}")
                 return False
 
-            label_path = f"{self.training_data_dir}/labels/train/{base_name}.txt"
+            label_filename = f"task_{task['id']}_ann_{annotation['id']}.txt"
+            label_path = f"{self.training_data_dir}/labels/train/{label_filename}"
+
             with open(label_path, 'w') as f:
                 f.write(label_content)
 
-            # 如果是人工修正，额外保存修正记录
-            if is_correction:
-                correction_record = {
-                    'task_id': task['id'],
-                    'annotation_id': annotation['id'],
-                    'timestamp': timestamp,
-                    'image_file': base_name + '.jpg',
-                    'label_file': base_name + '.txt',
-                    'original_predictions': task.get('predictions', [])
-                }
-                
-                correction_file = f"{self.training_data_dir}/corrections/{base_name}.json"
-                with open(correction_file, 'w') as f:
-                    json.dump(correction_record, f, indent=2)
-
-            logger.info(f"Saved training data: {train_image_path}")
+            logger.info(f"Saved training data: {train_image_path}, {label_path}")
             return True
 
         except Exception as e:
@@ -293,12 +316,13 @@ class RectangleLabelsModelWithFinetune(ControlModel):
             if not rectanglelabels:
                 continue
 
-            # Label Studio格式转YOLO格式
+            # 获取边界框坐标（Label Studio格式：左上角 + 宽高，百分比）
             x_percent = value.get('x', 0) / 100
             y_percent = value.get('y', 0) / 100
             width_percent = value.get('width', 0) / 100
             height_percent = value.get('height', 0) / 100
 
+            # 转换为YOLO格式（中心点 + 宽高，归一化）
             center_x = x_percent + width_percent / 2
             center_y = y_percent + height_percent / 2
 
@@ -306,6 +330,7 @@ class RectangleLabelsModelWithFinetune(ControlModel):
             label_name = rectanglelabels[0]
             class_id = self.get_class_id(label_name)
 
+            # YOLO格式：class_id center_x center_y width height
             label_line = f"{class_id} {center_x:.6f} {center_y:.6f} {width_percent:.6f} {height_percent:.6f}"
             label_lines.append(label_line)
 
@@ -313,69 +338,80 @@ class RectangleLabelsModelWithFinetune(ControlModel):
 
     def get_class_id(self, label_name):
         """获取标签对应的类别ID"""
+        # 创建反向映射：从Label Studio标签到模型类别ID
         if not hasattr(self, '_label_to_id_map'):
             self._label_to_id_map = {}
+            
+            # 获取所有唯一的Label Studio标签
             unique_labels = sorted(set(self.label_map.values()))
+            
+            # 为每个标签分配一个类别ID
             for i, label in enumerate(unique_labels):
                 self._label_to_id_map[label] = i
 
         return self._label_to_id_map.get(label_name, 0)
 
-    def check_and_trigger_finetune(self):
-        """检查是否满足fine-tune条件并触发训练"""
-        # 获取配置参数
-        min_total_annotations = int(self.control.attr.get("model_min_annotations", "20"))
-        min_corrections = int(self.control.attr.get("model_min_corrections", "10"))
-        retrain_interval = int(self.control.attr.get("model_retrain_interval", "5"))
+    def create_training_config(self):
+        """创建YOLO训练配置文件"""
+        # 获取所有唯一的Label Studio标签
+        unique_labels = sorted(set(self.label_map.values()))
         
-        # 条件1：总标注数量达标
-        if self.stats['total_annotations'] < min_total_annotations:
-            logger.info(f"Not enough total annotations: {self.stats['total_annotations']} < {min_total_annotations}")
-            return False
-        
-        # 条件2：人工修正数量达标
-        corrections_since_last_train = self.get_corrections_since_last_train()
-        if corrections_since_last_train < min_corrections:
-            logger.info(f"Not enough corrections: {corrections_since_last_train} < {min_corrections}")
-            return False
-        
-        # 条件3：满足重训练间隔
-        if self.stats['total_corrections'] % retrain_interval != 0:
-            logger.info(f"Not at training interval: {self.stats['total_corrections']} % {retrain_interval} != 0")
-            return False
-        
-        logger.info("All conditions met, starting fine-tune...")
-        return self.start_finetune()
+        config = {
+            'path': self.training_data_dir,
+            'train': 'images/train',
+            'val': 'images/val',
+            'names': {}
+        }
 
-    def get_corrections_since_last_train(self):
-        """获取上次训练后的修正数量"""
-        if not self.stats['finetune_history']:
-            return self.stats['total_corrections']
-        
-        last_train_corrections = self.stats['finetune_history'][-1].get('total_corrections', 0)
-        return self.stats['total_corrections'] - last_train_corrections
+        # 构建类别名称映射
+        for i, label in enumerate(unique_labels):
+            config['names'][i] = label
+
+        config_path = f"{self.training_data_dir}/dataset.yaml"
+        with open(config_path, 'w') as f:
+            yaml.dump(config, f, default_flow_style=False)
+
+        logger.info(f"Created training config: {config_path}")
+        logger.info(f"Classes: {config['names']}")
+        return config_path
 
     def start_finetune(self):
-        """开始fine-tune训练"""
+        """开始微调训练"""
         try:
+            # 检查训练数据
+            train_images = list(Path(f"{self.training_data_dir}/images/train").glob("*.jpg"))
+            train_labels = list(Path(f"{self.training_data_dir}/labels/train").glob("*.txt"))
+            
+            if len(train_images) == 0:
+                logger.error("No training images found")
+                return False
+                
+            if len(train_labels) == 0:
+                logger.error("No training labels found")
+                return False
+                
+            logger.info(f"Found {len(train_images)} images and {len(train_labels)} labels")
+
             # 创建验证集
             self.create_validation_split()
-            
+
             # 创建训练配置
             config_path = self.create_training_config()
-            
+
             # 获取训练参数
-            epochs = int(self.control.attr.get("model_finetune_epochs", "50"))
-            batch_size = int(self.control.attr.get("model_finetune_batch", "16"))
-            learning_rate = float(self.control.attr.get("model_finetune_lr", "0.0001"))
-            patience = int(self.control.attr.get("model_finetune_patience", "10"))
-            
-            logger.info(f"Training parameters - epochs: {epochs}, batch: {batch_size}, lr: {learning_rate}")
-            
+            epochs = int(self.control.attr.get("model_finetune_epochs", "20"))
+            batch_size = int(self.control.attr.get("model_finetune_batch", "8"))
+            learning_rate = float(self.control.attr.get("model_finetune_lr", "0.001"))
+            patience = int(self.control.attr.get("model_finetune_patience", "5"))
+
+            logger.info(f"Training parameters - epochs: {epochs}, batch: {batch_size}, lr: {learning_rate}, patience: {patience}")
+
+            # 初始化模型进行微调
+            base_model_path = f"/app/models/{self.model_path}"
+            model = YOLO(base_model_path)
+
             # 开始训练
-            model = YOLO(self.current_model_path)
-            
-            train_name = f"finetune_v{self.stats['model_version']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            logger.info("Starting YOLO fine-tuning...")
             
             results = model.train(
                 data=config_path,
@@ -385,109 +421,65 @@ class RectangleLabelsModelWithFinetune(ControlModel):
                 patience=patience,
                 save=True,
                 project=f"/app/models/runs/project_{self.project_id}",
-                name=train_name,
+                name="finetune",
                 exist_ok=True,
                 verbose=True
             )
-            
-            # 保存新模型
+
+            # 保存最佳模型
             best_model_path = results.save_dir / "weights" / "best.pt"
             if os.path.exists(best_model_path):
-                # 备份当前模型
-                backup_path = f"{self.finetune_history_dir}/model_v{self.stats['model_version']}.pt"
-                shutil.copy2(self.current_model_path, backup_path)
+                shutil.copy2(best_model_path, self.finetune_model_path)
+                logger.info(f"Fine-tuned model saved to: {self.finetune_model_path}")
+
+                # 更新当前使用的模型
+                self.model = YOLO(self.finetune_model_path)
                 
-                # 更新当前模型
-                shutil.copy2(best_model_path, self.current_model_path)
-                self.model = YOLO(self.current_model_path)
-                
-                # 更新统计信息
-                self.stats['model_version'] += 1
-                self.stats['last_finetune_date'] = datetime.now().isoformat()
-                self.stats['finetune_history'].append({
-                    'version': self.stats['model_version'],
-                    'timestamp': datetime.now().isoformat(),
-                    'total_annotations': self.stats['total_annotations'],
-                    'total_corrections': self.stats['total_corrections'],
-                    'metrics': {
-                        'mAP': float(results.results_dict.get('metrics/mAP50-95', 0)),
-                        'precision': float(results.results_dict.get('metrics/precision', 0)),
-                        'recall': float(results.results_dict.get('metrics/recall', 0))
-                    }
-                })
-                
-                self.save_training_stats()
-                logger.info(f"Fine-tune completed! New model version: {self.stats['model_version']}")
                 return True
             else:
                 logger.error("Best model not found after training")
                 return False
-                
+
         except Exception as e:
-            logger.error(f"Error during fine-tune: {e}", exc_info=True)
+            logger.error(f"Error during fine-tuning: {e}", exc_info=True)
             return False
 
     def create_validation_split(self):
-        """创建验证集（20%的数据）"""
+        """创建验证集"""
         train_images = list(Path(f"{self.training_data_dir}/images/train").glob("*.jpg"))
         
+        # 简单的验证集分割（取20%作为验证集）
         val_ratio = 0.2
         val_count = max(1, int(len(train_images) * val_ratio))
-        
-        # 随机选择验证集
-        import random
-        random.shuffle(train_images)
-        
-        for img_file in train_images[-val_count:]:
-            # 移动到验证集
+
+        logger.info(f"Creating validation split: {val_count} images out of {len(train_images)}")
+
+        for i, img_file in enumerate(train_images[-val_count:]):
+            # 复制图像
             val_img_path = f"{self.training_data_dir}/images/val/{img_file.name}"
-            shutil.move(str(img_file), val_img_path)
-            
-            # 移动对应的标签
+            shutil.copy2(img_file, val_img_path)
+
+            # 复制对应的标签文件
             label_file = f"{self.training_data_dir}/labels/train/{img_file.stem}.txt"
             if os.path.exists(label_file):
                 val_label_path = f"{self.training_data_dir}/labels/val/{img_file.stem}.txt"
-                shutil.move(label_file, val_label_path)
-
-    def create_training_config(self):
-        """创建YOLO训练配置文件"""
-        unique_labels = sorted(set(self.label_map.values()))
-        
-        config = {
-            'path': self.training_data_dir,
-            'train': 'images/train',
-            'val': 'images/val',
-            'names': {i: label for i, label in enumerate(unique_labels)}
-        }
-        
-        config_path = f"{self.training_data_dir}/dataset.yaml"
-        with open(config_path, 'w') as f:
-            yaml.dump(config, f, default_flow_style=False)
-            
-        return config_path
+                shutil.copy2(label_file, val_label_path)
 
     def reset_training(self):
-        """重置训练数据和模型（用于调试）"""
+        """重置训练数据和模型"""
         try:
             if os.path.exists(self.training_data_dir):
                 shutil.rmtree(self.training_data_dir)
             
-            if os.path.exists(self.models_dir):
-                shutil.rmtree(self.models_dir)
-            
-            self.setup_directories()
-            self.stats = {
-                'total_annotations': 0,
-                'total_corrections': 0,
-                'finetune_history': [],
-                'last_finetune_date': None,
-                'model_version': 1,
-                'annotation_history': []
-            }
-            self.save_training_stats()
-            self.initialize_model()
-            
-            logger.info("Training data and models reset successfully")
+            if os.path.exists(self.finetune_model_path):
+                os.remove(self.finetune_model_path)
+                
+            if os.path.exists(self.annotation_counter_file):
+                os.remove(self.annotation_counter_file)
+                
+            self.annotation_counter = 0
+            self.setup_training_dirs()
+            logger.info("Training data and fine-tuned model reset")
             return True
         except Exception as e:
             logger.error(f"Error resetting training: {e}")
@@ -495,5 +487,9 @@ class RectangleLabelsModelWithFinetune(ControlModel):
 
 
 def is_obb(control: ControlTag) -> bool:
-    """检查是否使用定向边界框"""
+    """Check if the model should use oriented bounding boxes (OBB)"""
     return get_bool(control.attr, "model_obb", "false")
+
+
+# 预加载缓存模型
+RectangleLabelsModelWithFinetune.get_cached_model(RectangleLabelsModelWithFinetune.model_path)

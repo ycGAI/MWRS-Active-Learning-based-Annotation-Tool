@@ -8,7 +8,7 @@ services:
     environment:
       - MODEL_DIR=/app/models
       - LABEL_STUDIO_URL=http://host.docker.internal:8081
-      - LABEL_STUDIO_API_KEY=${LABEL_STUDIO_API_KEY}
+      - LABEL_STUDIO_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6ODA1ODY4NjMwNiwiaWF0IjoxNzUxNDg2MzA2LCJqdGkiOiJlZDdiMDE3Yzc3Njk0YWMxYmY5MmYzNzMzZTUxYzI2ZCIsInVzZXJfaWQiOjF9.6bwK3EJ2lEGsBLYJHDbJlAGiP-t1l7oOjHfCkVXOXx4
       - LOG_LEVEL=DEBUG
       - LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED=true
       - LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=/label-studio/data
@@ -16,7 +16,8 @@ services:
       - ./models:/app/models
       - ./training_data:/app/training_data
       - ./cache:/app/cache
-      - ~/label-studio-data:/label-studio/data:ro  # 添加这行
+      # 修改这里：挂载正确的目录
+      - /home/gyc/label-studio-data/media:/label-studio-data:ro
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"

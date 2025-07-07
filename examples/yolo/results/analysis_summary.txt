@@ -1,0 +1,35 @@
+YOLO Model Confidence vs Bounding Box Quality Correlation Analysis Report
+==================================================
+
+Analysis time: 2025-07-07 11:20:55.204797
+Model path: /home/gyc/MWRS-Active-Learning-based-Annotation-Tool/examples/yolo/models/best.pt
+Number of test images: 5173
+Total predictions: 9540
+Successfully matched: 7169
+
+Correlation Analysis Results:
+- Pearson correlation coefficient: 0.5499 (p-value: 0.0000e+00)
+- Spearman correlation coefficient: 0.5845 (p-value: 0.0000e+00)
+- Correlation strength: moderate positive correlation
+
+Statistical Summary:
+- Mean confidence: 0.7839 ± 0.1871
+- Mean IoU: 0.8608 ± 0.1264
+
+Performance by Class:
+                    confidence                 iou           matched
+                          mean       std      mean       std   count
+class                                                               
+armeria-maritima      0.804269  0.136991  0.857912  0.104535    1105
+centaurea-jacea       0.850537  0.136210  0.879986  0.099367     981
+cirsium-oleraceum     0.850835  0.141729  0.898422  0.096642     986
+daucus-carota         0.681896  0.216942  0.825678  0.149980    2398
+knautia-arvensis      0.846980  0.158132  0.887358  0.117204    1030
+lychnis-flos-cuculi   0.822503  0.147314  0.867393  0.122296     669
+
+Conclusion:
+Based on the analysis of 7169 samples, the results show that there is
+a significant moderate positive correlation (r=0.550, p<0.001) between YOLO model confidence
+and bounding box quality (IoU). This proves that the model's confidence score
+effectively reflects the accuracy of its bounding box predictions. Higher confidence
+predictions typically have better localization accuracy.

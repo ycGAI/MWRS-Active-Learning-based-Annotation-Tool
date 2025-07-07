@@ -1,23 +1,63 @@
 version: '3.8'
+
 services:
+  # Label Studio 服务
+  label-studio:
+    image: heartexlabs/label-studio:1.6.0
+    container_name: label-studio-plant
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./label-studio-data:/label-studio/data
+    environment:
+      # 设置预定义的API Token（Label Studio 1.6.0支持）
+      - LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED=true
+      - LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=/label-studio/data/files
+      # 如果需要设置默认的用户和密码
+      - LABEL_STUDIO_USERNAME=${LABEL_STUDIO_USERNAME:-admin@example.com}
+      - LABEL_STUDIO_PASSWORD=${LABEL_STUDIO_PASSWORD:-password}
+      # 设置API Token（Label Studio 1.6.0支持）
+      - LABEL_STUDIO_USER_TOKEN=${LABEL_STUDIO_API_KEY:-your-predefined-token-here}
+    restart: unless-stopped
+    networks:
+      - label-studio-network
+
+  # YOLO ML Backend 服务
   yolo:
     build: .
+    image: heartexlabs/label-studio-ml-backend:yolo
     container_name: yolo
     ports:
       - "9090:9090"
     environment:
       - MODEL_DIR=/app/models
-      - LABEL_STUDIO_URL=http://host.docker.internal:8081
-      - LABEL_STUDIO_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6ODA1ODY4NjMwNiwiaWF0IjoxNzUxNDg2MzA2LCJqdGkiOiJlZDdiMDE3Yzc3Njk0YWMxYmY5MmYzNzMzZTUxYzI2ZCIsInVzZXJfaWQiOjF9.6bwK3EJ2lEGsBLYJHDbJlAGiP-t1l7oOjHfCkVXOXx4
-      - LOG_LEVEL=DEBUG
-      - LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED=true
-      - LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=/label-studio/data
+      # Label Studio URL - 使用容器网络内部通信
+      - LABEL_STUDIO_URL=http://label-studio:8080
+      # API Key - 使用与Label Studio相同的token
+      - LABEL_STUDIO_API_KEY=${LABEL_STUDIO_API_KEY:-your-predefined-token-here}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - ALLOW_CUSTOM_MODEL_PATH=true
+      - MODEL_SCORE_THRESHOLD=0.5
+      - PYTHONPATH=/app
     volumes:
+      # 挂载模型目录
       - ./models:/app/models
+      # 挂载训练数据目录
       - ./training_data:/app/training_data
+      # 挂载缓存目录
       - ./cache:/app/cache
-      # 修改这里：挂载正确的目录
-      - /home/gyc/label-studio-data/media:/label-studio-data:ro
     restart: unless-stopped
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    depends_on:
+      - label-studio
+    networks:
+      - label-studio-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9090/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  label-studio-network:
+    driver: bridge

@@ -36,6 +36,13 @@ available_model_classes = [
 class YOLO(LabelStudioMLBase):
     """Label Studio ML Backend based on Ultralytics YOLO"""
 
+    def __init__(self, **kwargs):
+        """Initialize the model"""
+        super(YOLO, self).__init__(**kwargs)
+        # 设置是否显示置信度（从环境变量读取，默认为true）
+        self.show_confidence = os.getenv('MODEL_SHOW_CONFIDENCE', 'true').lower() == 'true'
+        logger.info(f"YOLO ML Backend initialized with show_confidence={self.show_confidence}")
+
     def setup(self):
         """Configure any parameters of your model here"""
         self.set("model_version", "yolo")
@@ -138,6 +145,19 @@ class YOLO(LabelStudioMLBase):
                 "score": avg_score,
                 "model_version": self.model_version,
             }
+            
+            # 添加置信度显示到meta字段
+            if self.show_confidence:
+                for region in prediction.get("result", []):
+                    if "score" in region and "value" in region:
+                        score = region["score"]
+                        labels = region["value"].get("rectanglelabels", ["Unknown"])
+                        label = labels[0] if labels else "Unknown"
+                        if "meta" not in region:
+                            region["meta"] = {}
+                        region["meta"]["text"] = [f"{label}: {score:.1%}"]
+                        logger.debug(f"Added confidence display: {label}: {score:.1%}")
+            
             predictions.append(prediction)
 
         return ModelResponse(predictions=predictions)
@@ -169,4 +189,3 @@ class YOLO(LabelStudioMLBase):
                 results[model.from_name] = False
 
         logger.info(f"Fit method results: {results}")
-        return results

@@ -33,6 +33,8 @@ $ curl http://localhost:9090/
 **Adding models in Label Studio project settings**
 Enter the URLs (try in order):
 
-http://host.docker.internal:9090
-http://localhost:9090
+http://host.docker.internal:9090         
+
+http://localhost:9090      
+
 http://172.17.0.1:9090

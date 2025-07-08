@@ -9,7 +9,7 @@ cd MWRS-Active-Learning-based-Annotation-Tool
 ```bash
 docker-compose up
 ```
-
+```
 <View>
   <Image name="image" value="$image"/>
   <RectangleLabels name="label" toName="image" model_score_threshold="0.25" model_show_confidence="true">
@@ -23,7 +23,7 @@ docker-compose up
   <Text name="confidence_text" toName="image" readonly="true"/>
   <TextArea name="scores" toName="image" placeholder="Confidence scores will appear here" rows="1" maxSubmissions="0" editable="false"/>
 </View>
-
+```
 **Verify service operation status**
 ```bash
 $ curl http://localhost:9090/

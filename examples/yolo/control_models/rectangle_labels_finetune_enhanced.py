@@ -104,16 +104,14 @@ class RectangleLabelsModelWithFinetune(RectangleLabelsModel):
             x, y, w, h = data.xywhn[i].tolist()
             model_label = model_names[int(data.cls[i])]
             
-            # 置信度过滤
             if score < self.model_score_threshold:
                 continue
             
-            # 标签映射检查
             if model_label not in self.label_map:
                 continue
             output_label = self.label_map[model_label]
             
-            # 创建基础区域
+            # 创建region，确保包含score
             region = {
                 "from_name": self.from_name,
                 "to_name": self.to_name,
@@ -125,16 +123,13 @@ class RectangleLabelsModelWithFinetune(RectangleLabelsModel):
                     "width": w * 100,
                     "height": h * 100,
                 },
-                "score": score,
+                "score": float(score),  # 确保是float类型
             }
             
-            # 如果启用置信度显示，添加到元数据
-            if self.show_confidence:
-                region["meta"] = {
-                    "text": [f"{output_label}: {score:.2%}"]  # 显示为百分比
-                }
-            
             regions.append(region)
+            
+            # 记录日志
+            logger.info(f"Detection: {output_label} (confidence: {score:.3f})")
         
         return regions
     

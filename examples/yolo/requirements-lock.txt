@@ -1,0 +1,663 @@
+absl-py==2.2.2
+action-msgs==2.0.2
+action-tutorials-interfaces==0.33.5
+action-tutorials-py==0.33.5
+actionlib-msgs==5.3.6
+actuator-msgs==0.0.1
+addict==2.4.0
+aiobotocore @ file:///croot/aiobotocore_1714464387507/work
+aiohttp @ file:///croot/aiohttp_1715108769648/work
+aioitertools @ file:///tmp/build/80754af9/aioitertools_1607109665762/work
+aiosignal @ file:///tmp/build/80754af9/aiosignal_1637843061372/work
+alabaster @ file:///croot/alabaster_1718201490751/work
+altair @ file:///work/perseverance-python-buildout/croot/altair_1698866618831/work
+ament-cmake-test==2.5.4
+ament-copyright==0.17.2
+ament-cppcheck==0.17.2
+ament-cpplint==0.17.2
+ament-flake8==0.17.2
+ament-index-python==1.8.1
+ament-lint==0.17.2
+ament-lint-cmake==0.17.2
+ament-package==0.16.4
+ament-pep257==0.17.2
+ament-uncrustify==0.17.2
+ament-xmllint==0.17.2
+anaconda-anon-usage @ file:///croot/anaconda-anon-usage_1710965072196/work
+anaconda-catalogs @ file:///work/perseverance-python-buildout/croot/anaconda-catalogs_1701755653155/work
+anaconda-client @ file:///croot/anaconda-client_1708640631824/work
+anaconda-cloud-auth @ file:///croot/anaconda-cloud-auth_1713991386423/work
+anaconda-navigator @ file:///croot/anaconda-navigator_1713464016024/work
+anaconda-project @ file:///croot/anaconda-project_1706049196717/work
+angles==1.16.0
+annotated-types @ file:///croot/annotated-types_1709542908624/work
+anyio @ file:///croot/anyio_1706220167567/work
+appdirs==1.4.4
+archspec @ file:///croot/archspec_1709217642129/work
+argcomplete==3.6.2
+argon2-cffi @ file:///opt/conda/conda-bld/argon2-cffi_1645000214183/work
+argon2-cffi-bindings @ file:///work/perseverance-python-buildout/croot/argon2-cffi-bindings_1698877183685/work
+arrow @ file:///work/perseverance-python-buildout/croot/arrow_1698877225835/work
+asgiref==3.8.1
+astroid @ file:///work/perseverance-python-buildout/croot/astroid_1698851155125/work
+astropy @ file:///croot/astropy_1717771811817/work
+astropy-iers-data @ file:///croot/astropy-iers-data_1717700760580/work
+asttokens @ file:///opt/conda/conda-bld/asttokens_1646925590279/work
+astunparse==1.6.3
+async-lru @ file:///work/perseverance-python-buildout/croot/async-lru_1701732681408/work
+atomicwrites==1.4.0
+attr==0.3.1
+attrs @ file:///work/perseverance-python-buildout/croot/attrs_1698845858439/work
+Automat @ file:///tmp/build/80754af9/automat_1600298431173/work
+autopep8 @ file:///croot/autopep8_1708962882016/work
+azure-core==1.33.0
+azure-storage-blob==12.25.1
+Babel @ file:///work/perseverance-python-buildout/croot/babel_1698863996602/work
+bcrypt @ file:///work/perseverance-python-buildout/croot/bcrypt_1698864043363/work
+beautifulsoup4 @ file:///croot/beautifulsoup4-split_1718029820055/work
+binaryornot @ file:///tmp/build/80754af9/binaryornot_1617751525010/work
+black @ file:///croot/black_1717597493389/work
+bleach==5.0.1
+blinker @ file:///work/perseverance-python-buildout/croot/blinker_1698846408677/work
+bokeh @ file:///croot/bokeh_1718119056511/work
+boltons @ file:///work/perseverance-python-buildout/croot/boltons_1698851177130/work
+bond==4.1.2
+boto==2.49.0
+boto3==1.38.3
+botocore==1.38.3
+Bottleneck @ file:///croot/bottleneck_1709069899917/work
+Brotli @ file:///croot/brotli-split_1714483155106/work
+builtin-interfaces==2.0.2
+cachetools @ file:///croot/cachetools_1713977085444/work
+catkin-pkg==1.0.0
+certifi @ file:///croot/certifi_1717618050233/work/certifi
+cffi @ file:///croot/cffi_1714483155441/work
+chardet @ file:///work/perseverance-python-buildout/croot/chardet_1698867756032/work
+charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
+click @ file:///work/perseverance-python-buildout/croot/click_1698845879718/work
+cloudpickle @ file:///work/perseverance-python-buildout/croot/cloudpickle_1698851247129/work
+colorama @ file:///work/perseverance-python-buildout/croot/colorama_1698847155966/work
+colorcet @ file:///croot/colorcet_1709758348067/work
+comm @ file:///croot/comm_1709322850197/work
+composition-interfaces==2.0.2
+conda @ file:///croot/conda_1715635703388/work
+conda-build @ file:///croot/conda-build_1716991285767/work
+conda-content-trust @ file:///croot/conda-content-trust_1714483159009/work
+conda-libmamba-solver @ file:///croot/conda-libmamba-solver_1706733287605/work/src
+conda-pack @ file:///croot/conda-pack_1710258022278/work
+conda-package-handling @ file:///croot/conda-package-handling_1718138267740/work
+conda-repo-cli @ file:///croot/conda-repo-cli_1709246574569/work
+conda-token @ file:///croot/conda-token_1718995751285/work
+conda_index @ file:///croot/conda-index_1719338209492/work
+conda_package_streaming @ file:///croot/conda-package-streaming_1718136078615/work
+ConfigArgParse==1.7
+constantly @ file:///croot/constantly_1703165600746/work
+contourpy @ file:///work/perseverance-python-buildout/croot/contourpy_1701756524386/work
+control-msgs==5.4.0
+cookiecutter @ file:///croot/cookiecutter_1711059812130/work
+cryptography @ file:///croot/cryptography_1714660666131/work
+cssselect @ file:///croot/cssselect_1707339882883/work
+cv-bridge==4.1.0
+cycler @ file:///tmp/build/80754af9/cycler_1637851556182/work
+cytoolz @ file:///croot/cytoolz_1701723583781/work
+dash==3.0.4
+dask @ file:///croot/dask-core_1715838601404/work
+dask-expr @ file:///croot/dask-expr_1715846440852/work
+datamodel-code-generator==0.26.1
+datashader @ file:///croot/datashader_1718121497283/work
+debugpy @ file:///work/perseverance-python-buildout/croot/debugpy_1698884710808/work
+decorator @ file:///opt/conda/conda-bld/decorator_1643638310831/work
+defusedxml @ file:///tmp/build/80754af9/defusedxml_1615228127516/work
+demo-nodes-py==0.33.5
+Deprecated==1.2.18
+diagnostic-msgs==5.3.6
+diagnostic-updater==4.2.3
+diff-match-patch @ file:///Users/ktietz/demo/mc3/conda-bld/diff-match-patch_1630511840874/work
+dill @ file:///croot/dill_1715094664823/work
+distributed @ file:///croot/distributed_1715844453814/work
+distro @ file:///croot/distro_1714488253808/work
+Django==5.1.8
+django-annoying==0.10.6
+django-cors-headers==3.6.0
+django-csp==3.7
+django-debug-toolbar==3.2.1
+django-environ==0.10.0
+django-extensions==3.2.3
+django-filter==24.3
+django-migration-linter==5.2.0
+django-model-utils==4.1.1
+django-ranged-fileresponse==0.1.2
+django-rq==2.10.3
+django-storages==1.12.3
+django-user-agents==0.4.0
+djangorestframework==3.15.2
+djangorestframework_simplejwt==5.4.0
+dnspython==2.7.0
+docstring-to-markdown @ file:///work/perseverance-python-buildout/croot/docstring-to-markdown_1698864372211/work
+docutils @ file:///work/perseverance-python-buildout/croot/docutils_1698846509640/work
+domain-coordinator==0.12.0
+drf-dynamic-fields==0.3.0
+drf-flex-fields==0.9.5
+drf-generators==0.3.0
+dwb-msgs==1.3.6
+easydict==1.13
+email_validator==2.2.0
+empy==4.2
+entrypoints @ file:///work/perseverance-python-buildout/croot/entrypoints_1698864391933/work
+et-xmlfile @ file:///work/perseverance-python-buildout/croot/et_xmlfile_1698868193149/work
+example-interfaces==0.12.0
+examples-rclpy-executors==0.19.5
+examples-rclpy-minimal-action-client==0.19.5
+examples-rclpy-minimal-action-server==0.19.5
+examples-rclpy-minimal-client==0.19.5
+examples-rclpy-minimal-publisher==0.19.5
+examples-rclpy-minimal-service==0.19.5
+examples-rclpy-minimal-subscriber==0.19.5
+executing @ file:///opt/conda/conda-bld/executing_1646925071911/work
+expiringdict==1.2.2
+Faker==37.1.0
+fastjsonschema @ file:///work/perseverance-python-buildout/croot/python-fastjsonschema_1698846742882/work
+filelock @ file:///work/perseverance-python-buildout/croot/filelock_1701733993137/work
+flake8 @ file:///croot/flake8_1708965256870/work
+Flask @ file:///croot/flask_1716545870149/work
+flatbuffers==25.2.10
+fonttools @ file:///croot/fonttools_1713551344105/work
+frozendict @ file:///croot/frozendict_1713194832637/work
+frozenlist @ file:///work/perseverance-python-buildout/croot/frozenlist_1698886842990/work
+fsspec @ file:///croot/fsspec_1714461537038/work
+gast==0.6.0
+generate-parameter-library-py==0.4.0
+genpy==2022.1
+gensim @ file:///work/perseverance-python-buildout/croot/gensim_1698886961185/work
+genson==1.3.0
+geographic-msgs==1.0.6
+geometry-msgs==5.3.6
+gitdb @ file:///tmp/build/80754af9/gitdb_1617117951232/work
+GitPython @ file:///work/perseverance-python-buildout/croot/gitpython_1698887140758/work
+google-api-core==2.24.2
+google-auth==2.39.0
+google-cloud-appengine-logging==1.6.1
+google-cloud-audit-log==0.3.2
+google-cloud-core==2.4.3
+google-cloud-logging==3.12.1
+google-cloud-storage==2.19.0
+google-crc32c==1.7.1
+google-pasta==0.2.0
+google-resumable-media==2.7.2
+googleapis-common-protos==1.70.0
+gps-msgs==2.0.4
+greenlet @ file:///croot/greenlet_1702059959679/work
+grpc-google-iam-v1==0.14.2
+grpcio==1.71.0
+grpcio-status==1.71.0
+h11==0.16.0
+h5py @ file:///croot/h5py_1715094721489/work
+HeapDict @ file:///Users/ktietz/demo/mc3/conda-bld/heapdict_1630598515714/work
+hf-xet==1.1.5
+holoviews @ file:///croot/holoviews_1718294635592/work
+httpcore==1.0.9
+httpx==0.28.1
+huggingface-hub==0.33.2
+humansignal-drf-yasg==1.21.10.post1
+hvplot @ file:///croot/hvplot_1715090436541/work
+hyperlink @ file:///tmp/build/80754af9/hyperlink_1610130746837/work
+idna @ file:///croot/idna_1714398848350/work
+ijson==3.3.0
+image-geometry==4.1.0
+imagecodecs @ file:///work/perseverance-python-buildout/croot/imagecodecs_1698851963060/work
+imageio @ file:///croot/imageio_1707247282708/work
+imagesize @ file:///work/perseverance-python-buildout/croot/imagesize_1698864514488/work
+imbalanced-learn @ file:///croot/imbalanced-learn_1718132237102/work
+importlib-metadata @ file:///croot/importlib_metadata-suite_1704813515092/work
+incremental @ file:///croot/incremental_1708639938299/work
+inflect==5.6.2
+inflection @ file:///work/perseverance-python-buildout/croot/inflection_1698869084799/work
+iniconfig @ file:///home/linux1/recipes/ci/iniconfig_1610983019677/work
+intake @ file:///croot/intake_1717513813848/work
+interactive-markers==2.5.4
+intervaltree @ file:///Users/ktietz/demo/mc3/conda-bld/intervaltree_1630511889664/work
+ipdb==0.13.13
+ipykernel @ file:///croot/ipykernel_1705933831282/work
+ipython @ file:///croot/ipython_1718287989724/work
+ipython-genutils @ file:///tmp/build/80754af9/ipython_genutils_1606773439826/work
+ipywidgets==8.1.6
+isodate==0.7.2
+isort @ file:///croot/isort_1718289883491/work
+itemadapter @ file:///tmp/build/80754af9/itemadapter_1626442940632/work
+itemloaders @ file:///croot/itemloaders_1708639918324/work
+itsdangerous @ file:///croot/itsdangerous_1716533337253/work
+jaraco.classes @ file:///tmp/build/80754af9/jaraco.classes_1620983179379/work
+jedi @ file:///work/perseverance-python-buildout/croot/jedi_1698864582475/work
+jeepney @ file:///tmp/build/80754af9/jeepney_1627537048313/work
+jellyfish @ file:///work/perseverance-python-buildout/croot/jellyfish_1698888203179/work
+Jinja2 @ file:///croot/jinja2_1716993405101/work
+jiter==0.9.0
+jmespath @ file:///work/perseverance-python-buildout/croot/jmespath_1701734034266/work
+joblib @ file:///croot/joblib_1718217211762/work
+joint-state-publisher==2.4.0
+joint-state-publisher-gui==2.4.0
+jsf==0.11.2
+json5 @ file:///tmp/build/80754af9/json5_1624432770122/work
+jsonpatch @ file:///croot/jsonpatch_1714483231291/work
+jsonpointer==2.1
+jsonschema==4.23.0
+jsonschema-specifications @ file:///work/perseverance-python-buildout/croot/jsonschema-specifications_1701731664072/work
+jupyter @ file:///croot/jupyter_1709837193779/work
+jupyter-console @ file:///work/perseverance-python-buildout/croot/jupyter_console_1707343324117/work
+jupyter-events @ file:///croot/jupyter_events_1718738097486/work
+jupyter-lsp @ file:///work/perseverance-python-buildout/croot/jupyter-lsp-meta_1707343107456/work
+jupyter_client @ file:///work/perseverance-python-buildout/croot/jupyter_client_1701731788627/work
+jupyter_core @ file:///croot/jupyter_core_1718818295206/work
+jupyter_server @ file:///croot/jupyter_server_1718827083372/work
+jupyter_server_terminals @ file:///work/perseverance-python-buildout/croot/jupyter_server_terminals_1701732095362/work
+jupyterlab @ file:///work/perseverance-python-buildout/croot/jupyterlab_1709060583522/work
+jupyterlab-pygments @ file:///tmp/build/80754af9/jupyterlab_pygments_1601490720602/work
+jupyterlab_server @ file:///work/perseverance-python-buildout/croot/jupyterlab_server_1707343148056/work
+jupyterlab_widgets==3.0.14
+keras==3.9.2
+keyring @ file:///croot/keyring_1709632513808/work
+kiwisolver @ file:///work/perseverance-python-buildout/croot/kiwisolver_1698847502605/work
+label-studio==1.17.0
+label-studio-sdk==1.0.11
+lark==1.2.2
+laser-geometry==2.7.0
+launch==3.4.4
+launch-ros==0.26.7
+launch-testing==3.4.4
+launch-testing-ros==0.26.7
+launch-xml==3.4.4
+launch-yaml==3.4.4
+launchdarkly-server-sdk==8.2.1
+lazy-object-proxy @ file:///croot/lazy-object-proxy_1712908712693/work
+lazy_loader @ file:///croot/lazy_loader_1718176737906/work
+lckr_jupyterlab_variableinspector @ file:///work/perseverance-python-buildout/croot/jupyterlab-variableinspector_1709066217947/work
+libarchive-c @ file:///tmp/build/80754af9/python-libarchive-c_1617780486945/work
+libclang==18.1.1
+libmambapy @ file:///croot/mamba-split_1714483352891/work/libmambapy
+lifecycle-msgs==2.0.2
+linkify-it-py @ file:///work/perseverance-python-buildout/croot/linkify-it-py_1698889355052/work
+llvmlite @ file:///croot/llvmlite_1706910704562/work
+lmdb @ file:///work/perseverance-python-buildout/croot/python-lmdb_1698865572354/work
+locket @ file:///work/perseverance-python-buildout/croot/locket_1698847555568/work
+lockfile==0.12.2
+logging-demo==0.33.5
+lxml @ file:///croot/lxml_1715289006750/work
+lz4 @ file:///work/perseverance-python-buildout/croot/lz4_1698895161487/work
+map-msgs==2.4.1
+Markdown @ file:///work/perseverance-python-buildout/croot/markdown_1698870813381/work
+markdown-it-py @ file:///work/perseverance-python-buildout/croot/markdown-it-py_1698846045803/work
+MarkupSafe @ file:///work/perseverance-python-buildout/croot/markupsafe_1707342994941/work
+matplotlib @ file:///croot/matplotlib-suite_1713336378214/work
+matplotlib-inline @ file:///work/perseverance-python-buildout/croot/matplotlib-inline_1698864771271/work
+mcap==1.2.2
+mccabe @ file:///opt/conda/conda-bld/mccabe_1644221741721/work
+mdit-py-plugins @ file:///work/perseverance-python-buildout/croot/mdit-py-plugins_1698895393342/work
+mdurl @ file:///work/perseverance-python-buildout/croot/mdurl_1698845653285/work
+menuinst @ file:///croot/menuinst_1718132535249/work
+message-filters==4.11.6
+mistune @ file:///work/perseverance-python-buildout/croot/mistune_1698895588147/work
+mkl-fft @ file:///work/perseverance-python-buildout/croot/mkl_fft_1698845673361/work
+mkl-random @ file:///work/perseverance-python-buildout/croot/mkl_random_1698845720894/work
+mkl-service==2.4.0
+ml_dtypes==0.5.1
+more-itertools @ file:///work/perseverance-python-buildout/croot/more-itertools_1701747136585/work
+mpmath @ file:///work/perseverance-python-buildout/croot/mpmath_1698864994882/work
+msgpack @ file:///work/perseverance-python-buildout/croot/msgpack-python_1698846122235/work
+multidict @ file:///croot/multidict_1701096859099/work
+multipledispatch @ file:///work/perseverance-python-buildout/croot/multipledispatch_1698846147141/work
+mypy==1.3.0
+mypy-extensions @ file:///work/perseverance-python-buildout/croot/mypy_extensions_1698863276135/work
+namex==0.0.9
+nav-2d-msgs==1.3.6
+nav-msgs==5.3.6
+nav2-common==1.3.6
+nav2-loopback-sim==1.0.0
+nav2-msgs==1.3.6
+nav2-simple-commander==1.0.0
+navigator-updater @ file:///croot/navigator-updater_1718030385782/work
+nbclient @ file:///work/perseverance-python-buildout/croot/nbclient_1701731912506/work
+nbconvert @ file:///work/perseverance-python-buildout/croot/nbconvert_1701732177957/work
+nbformat @ file:///work/perseverance-python-buildout/croot/nbformat_1701731830074/work
+nest-asyncio @ file:///croot/nest-asyncio_1708532673751/work
+networkx @ file:///croot/networkx_1717597493534/work
+nltk==3.9.1
+notebook @ file:///io/croot/notebook_1709244541687/work
+notebook_shim @ file:///work/perseverance-python-buildout/croot/notebook-shim_1707343174853/work
+numba @ file:///croot/numba_1711986258266/work
+numexpr @ file:///work/perseverance-python-buildout/croot/numexpr_1698871031164/work
+numpy @ file:///croot/numpy_and_numpy_base_1708638617955/work/dist/numpy-1.26.4-cp312-cp312-linux_x86_64.whl#sha256=1d700f51d8b4fa684d858c9e3b56b1656bc5c82b6b79ff08d4e3b491c430059f
+numpydoc @ file:///croot/numpydoc_1718279157024/work
+nvidia-cublas-cu11==11.11.3.6
+nvidia-cuda-cupti-cu11==11.8.87
+nvidia-cuda-nvrtc-cu11==11.8.89
+nvidia-cuda-runtime-cu11==11.8.89
+nvidia-cudnn-cu11==9.1.0.70
+nvidia-cufft-cu11==10.9.0.58
+nvidia-curand-cu11==10.3.0.86
+nvidia-cusolver-cu11==11.4.1.48
+nvidia-cusparse-cu11==11.7.5.86
+nvidia-nccl-cu11==2.20.5
+nvidia-nvtx-cu11==11.8.86
+open3d==0.19.0
+openai==1.76.2
+opencv-contrib-python==4.10.0.84
+opencv-python==4.11.0.86
+opencv-python-headless==4.11.0.86
+openpyxl @ file:///croot/openpyxl_1714158863747/work
+opentelemetry-api==1.32.1
+opt_einsum==3.4.0
+optree==0.15.0
+ordered-set==4.0.2
+osrf-pycommon==2.1.6
+overrides @ file:///work/perseverance-python-buildout/croot/overrides_1701732220415/work
+packaging @ file:///croot/packaging_1710807400464/work
+pal-statistics==2.6.2
+pal-statistics-msgs==2.6.2
+pandas==2.2.3
+pandocfilters @ file:///opt/conda/conda-bld/pandocfilters_1643405455980/work
+panel @ file:///croot/panel_1718119034739/work
+param @ file:///croot/param_1711136841944/work
+parsel @ file:///croot/parsel_1707503445438/work
+parso @ file:///opt/conda/conda-bld/parso_1641458642106/work
+partd @ file:///work/perseverance-python-buildout/croot/partd_1698863295708/work
+pathspec @ file:///work/perseverance-python-buildout/croot/pathspec_1698805478393/work
+patsy @ file:///croot/patsy_1718378176128/work
+pcl-msgs==1.0.0
+pendulum-msgs==0.33.5
+pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
+pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
+pillow @ file:///croot/pillow_1714398848491/work
+pkce @ file:///work/perseverance-python-buildout/croot/pkce_1698863336124/work
+pkginfo @ file:///croot/pkginfo_1715695984887/work
+platformdirs @ file:///work/perseverance-python-buildout/croot/platformdirs_1701732573265/work
+plotly @ file:///croot/plotly_1718136942809/work
+pluggy @ file:///work/perseverance-python-buildout/croot/pluggy_1698805497733/work
+ply @ file:///work/perseverance-python-buildout/croot/ply_1698846188635/work
+prometheus-client @ file:///work/perseverance-python-buildout/croot/prometheus_client_1698865353814/work
+prompt-toolkit @ file:///croot/prompt-toolkit_1704404351921/work
+Protego @ file:///tmp/build/80754af9/protego_1598657180827/work
+proto-plus==1.26.1
+protobuf==5.29.4
+psutil @ file:///work/perseverance-python-buildout/croot/psutil_1698863411559/work
+psycopg2-binary==2.9.10
+ptyprocess @ file:///tmp/build/80754af9/ptyprocess_1609355006118/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
+pure-eval @ file:///opt/conda/conda-bld/pure_eval_1646925070566/work
+py-cpuinfo @ file:///work/perseverance-python-buildout/croot/py-cpuinfo_1698865397566/work
+pyarrow @ file:///croot/pyarrow_1707330824290/work/python
+pyasn1 @ file:///Users/ktietz/demo/mc3/conda-bld/pyasn1_1629708007385/work
+pyasn1-modules==0.2.8
+pyboxen==1.3.0
+pycodestyle @ file:///croot/pycodestyle_1701910164456/work
+pycosat @ file:///croot/pycosat_1714510623388/work
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pyct @ file:///work/perseverance-python-buildout/croot/pyct_1698871492339/work
+pycurl @ file:///work/perseverance-python-buildout/croot/pycurl_1698898006285/work
+pydantic==2.11.4
+pydantic_core==2.33.2
+pydeck @ file:///croot/pydeck_1706194064552/work
+PyDispatcher @ file:///work/perseverance-python-buildout/croot/pydispatcher_1698871512960/work
+pydocstyle @ file:///work/perseverance-python-buildout/croot/pydocstyle_1698865417470/work
+pyerfa @ file:///croot/pyerfa_1717700762709/work
+pyflakes @ file:///croot/pyflakes_1708962956225/work
+Pygments @ file:///work/perseverance-python-buildout/croot/pygments_1698846270603/work
+PyJWT==2.10.1
+pylint @ file:///work/perseverance-python-buildout/croot/pylint_1698865458204/work
+pylint-venv @ file:///croot/pylint-venv_1709837612550/work
+pyls-spyder==0.4.0
+pyodbc @ file:///croot/pyodbc_1705431351638/work
+PyOpenGL==3.1.9
+PyOpenGL-accelerate==3.1.9
+pyOpenSSL @ file:///croot/pyopenssl_1708386183891/work
+pyparsing @ file:///work/perseverance-python-buildout/croot/pyparsing_1698847881454/work
+PyQt5==5.15.10
+PyQt5-sip @ file:///work/perseverance-python-buildout/croot/pyqt-split_1698847927472/work/pyqt_sip
+PyQt5-stubs==5.15.6.0
+PyQtWebEngine==5.15.6
+pyquaternion==0.9.9
+pyRFC3339==2.0.1
+PySocks @ file:///work/perseverance-python-buildout/croot/pysocks_1698845478203/work
+pytest==7.3.2
+pytest-qt==4.2.0
+python-dateutil @ file:///croot/python-dateutil_1716495738603/work
+python-dotenv @ file:///work/perseverance-python-buildout/croot/python-dotenv_1698846722824/work
+python-json-logger==2.0.4
+python-lsp-black @ file:///croot/python-lsp-black_1709232897954/work
+python-lsp-jsonrpc @ file:///croot/python-lsp-jsonrpc_1708962872556/work
+python-lsp-server @ file:///croot/python-lsp-server_1708971736441/work
+python-qt-binding==2.2.1
+python-slugify @ file:///tmp/build/80754af9/python-slugify_1620405669636/work
+python-snappy @ file:///work/perseverance-python-buildout/croot/python-snappy_1698900252503/work
+pytoolconfig @ file:///croot/pytoolconfig_1701728692402/work
+pytools==2025.1.2
+pytz==2022.7.1
+pyviz_comms @ file:///croot/pyviz_comms_1711136832766/work
+pywavelets @ file:///croot/pywavelets_1705049820073/work
+pyxdg @ file:///tmp/build/80754af9/pyxdg_1603822279816/work
+PyYAML @ file:///work/perseverance-python-buildout/croot/pyyaml_1698849903511/work
+pyzmq @ file:///croot/pyzmq_1705605076900/work
+QDarkStyle @ file:///croot/qdarkstyle_1709231003551/work
+qstylizer @ file:///work/perseverance-python-buildout/croot/qstylizer_1698900556042/work/dist/qstylizer-0.2.2-py2.py3-none-any.whl#sha256=6d40f32007acd9673a44b9d879388ca3e09a68f0342daa31cab082bc596303c8
+qt-dotgraph==2.7.5
+qt-gui==2.7.5
+qt-gui-cpp==2.7.5
+qt-gui-py-common==2.7.5
+QtAwesome @ file:///work/perseverance-python-buildout/croot/qtawesome_1698900594447/work
+qtconsole @ file:///croot/qtconsole_1709231153903/work
+QtPy @ file:///work/perseverance-python-buildout/croot/qtpy_1701733558435/work
+quality-of-service-demo-py==0.33.5
+queuelib @ file:///work/perseverance-python-buildout/croot/queuelib_1698873899800/work
+rcl-interfaces==2.0.2
+rclpy==7.1.4
+rcutils==6.7.2
+redis==5.2.1
+referencing @ file:///work/perseverance-python-buildout/croot/referencing_1701731622327/work
+regex @ file:///work/perseverance-python-buildout/croot/regex_1698863574928/work
+requests==2.32.3
+requests-file @ file:///Users/ktietz/demo/mc3/conda-bld/requests-file_1629455781986/work
+requests-mock==1.12.1
+requests-toolbelt @ file:///work/perseverance-python-buildout/croot/requests-toolbelt_1698846872000/work
+resource-retriever==3.4.4
+retrying==1.3.4
+rfc3339-validator @ file:///work/perseverance-python-buildout/croot/rfc3339-validator_1698873973408/work
+rfc3986-validator @ file:///work/perseverance-python-buildout/croot/rfc3986-validator_1698874010100/work
+rich @ file:///work/perseverance-python-buildout/croot/rich_1698846912932/work
+rmw-dds-common==3.1.0
+robot-localization==3.8.2
+rope @ file:///croot/rope_1708963153974/work
+ros-gz-bridge==1.0.11
+ros-gz-interfaces==1.0.11
+ros-gz-sim==1.0.11
+ros2action==0.32.4
+ros2bag==0.26.7
+ros2bag-mcap-cli==0.26.7
+ros2bag-sqlite3-cli==0.26.7
+ros2cli==0.32.4
+ros2component==0.32.4
+ros2doctor==0.32.4
+ros2interface==0.32.4
+ros2launch==0.26.7
+ros2lifecycle==0.32.4
+ros2multicast==0.32.4
+ros2node==0.32.4
+ros2param==0.32.4
+ros2pkg==0.32.4
+ros2run==0.32.4
+ros2service==0.32.4
+ros2topic==0.32.4
+rosbag2-interfaces==0.26.7
+rosbag2-py==0.26.7
+rosgraph-msgs==2.0.2
+rosidl-adapter==4.6.5
+rosidl-cli==4.6.5
+rosidl-cmake==4.6.5
+rosidl-generator-c==4.6.5
+rosidl-generator-cpp==4.6.5
+rosidl-generator-py==0.22.1
+rosidl-generator-type-description==4.6.5
+rosidl-parser==4.6.5
+rosidl-pycommon==4.6.5
+rosidl-runtime-py==0.13.1
+rosidl-typesupport-c==3.2.2
+rosidl-typesupport-cpp==3.2.2
+rosidl-typesupport-fastrtps-c==3.6.1
+rosidl-typesupport-fastrtps-cpp==3.6.1
+rosidl-typesupport-introspection-c==4.6.5
+rosidl-typesupport-introspection-cpp==4.6.5
+rpds-py @ file:///work/perseverance-python-buildout/croot/rpds-py_1698982686240/work
+rpyutils==0.4.1
+rq==1.16.2
+rqt-action==2.2.0
+rqt-bag==1.5.4
+rqt-bag-plugins==1.5.4
+rqt-console==2.2.1
+rqt-graph==1.5.4
+rqt-gui==1.6.0
+rqt-gui-py==1.6.0
+rqt-msg==1.5.1
+rqt-plot==1.4.2
+rqt-publisher==1.7.2
+rqt-py-common==1.6.0
+rqt-py-console==1.2.2
+rqt-reconfigure==1.6.2
+rqt-service-caller==1.2.1
+rqt-shell==1.2.2
+rqt-srv==1.2.2
+rqt-topic==1.7.3
+rsa==4.9.1
+rstr==3.2.2
+rtcm-msgs==1.1.6
+Rtree @ file:///work/perseverance-python-buildout/croot/rtree_1698900851071/work
+ruamel-yaml-conda @ file:///work/perseverance-python-buildout/croot/ruamel_yaml_1698874047131/work
+ruamel.yaml @ file:///work/perseverance-python-buildout/croot/ruamel.yaml_1698863605521/work
+rules==3.4
+s3fs @ file:///croot/s3fs_1714466037529/work
+s3transfer==0.12.0
+scikit-image @ file:///croot/scikit-image_1718285223463/work
+scikit-learn @ file:///croot/scikit-learn_1714164736727/work
+scipy @ file:///croot/scipy_1717521478074/work/dist/scipy-1.13.1-cp312-cp312-linux_x86_64.whl#sha256=a60c1bdf983ee297b25e41830d00cc2af50f00bcb47e55578703fef1594ec56e
+Scrapy @ file:///croot/scrapy_1708714682090/work
+seaborn @ file:///croot/seaborn_1718302919398/work
+SecretStorage @ file:///work/perseverance-python-buildout/croot/secretstorage_1698846935813/work
+semver @ file:///croot/semver_1709243621175/work
+Send2Trash @ file:///work/perseverance-python-buildout/croot/send2trash_1701732325573/work
+sensor-msgs==5.3.6
+sensor-msgs-py==5.3.6
+sentry-sdk==2.27.0
+service-identity @ file:///Users/ktietz/demo/mc3/conda-bld/service_identity_1629460757137/work
+service-msgs==2.0.2
+setuptools==80.1.0
+shape-msgs==5.3.6
+sip @ file:///work/perseverance-python-buildout/croot/sip_1698846977033/work
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+slam-toolbox==2.8.3
+smart-open==7.1.0
+smclib==4.1.2
+smmap @ file:///tmp/build/80754af9/smmap_1611694433573/work
+sniffio @ file:///croot/sniffio_1705431295498/work
+snowballstemmer @ file:///tmp/build/80754af9/snowballstemmer_1637937080595/work
+sortedcontainers @ file:///tmp/build/80754af9/sortedcontainers_1623949099177/work
+soupsieve @ file:///work/perseverance-python-buildout/croot/soupsieve_1698866207280/work
+Sphinx @ file:///croot/sphinx_1718275386998/work
+sphinxcontrib-applehelp @ file:///home/ktietz/src/ci/sphinxcontrib-applehelp_1611920841464/work
+sphinxcontrib-devhelp @ file:///home/ktietz/src/ci/sphinxcontrib-devhelp_1611920923094/work
+sphinxcontrib-htmlhelp @ file:///tmp/build/80754af9/sphinxcontrib-htmlhelp_1623945626792/work
+sphinxcontrib-jsmath @ file:///home/ktietz/src/ci/sphinxcontrib-jsmath_1611920942228/work
+sphinxcontrib-qthelp @ file:///home/ktietz/src/ci/sphinxcontrib-qthelp_1611921055322/work
+sphinxcontrib-serializinghtml @ file:///croot/sphinxcontrib-serializinghtml_1718201486943/work
+spyder @ file:///croot/spyder_1710523693130/work
+spyder-kernels @ file:///croot/spyder-kernels_1707937713588/work
+SQLAlchemy @ file:///croot/sqlalchemy_1718378176902/work
+sqlparse==0.5.3
+sros2==0.13.3
+stack-data @ file:///opt/conda/conda-bld/stack_data_1646927590127/work
+statistics-msgs==2.0.2
+statsmodels @ file:///croot/statsmodels_1718381181899/work
+std-msgs==5.3.6
+std-srvs==5.3.6
+stereo-msgs==5.3.6
+streamlit @ file:///croot/streamlit_1710262506170/work
+sympy @ file:///croot/sympy_1701397643339/work
+tables @ file:///croot/pytables_1705614842881/work
+tabulate @ file:///work/perseverance-python-buildout/croot/tabulate_1701748610754/work
+tblib @ file:///Users/ktietz/demo/mc3/conda-bld/tblib_1629402031467/work
+teleop-twist-keyboard==2.4.0
+tenacity @ file:///work/perseverance-python-buildout/croot/tenacity_1698863691366/work
+tensorboard==2.19.0
+tensorboard-data-server==0.7.2
+tensorflow==2.19.0
+termcolor==3.1.0
+terminado @ file:///work/perseverance-python-buildout/croot/terminado_1698874934826/work
+text-unidecode @ file:///Users/ktietz/demo/mc3/conda-bld/text-unidecode_1629401354553/work
+textdistance @ file:///tmp/build/80754af9/textdistance_1612461398012/work
+tf-transformations==1.1.0
+tf2-geometry-msgs==0.36.10
+tf2-kdl==0.36.10
+tf2-msgs==0.36.10
+tf2-py==0.36.10
+tf2-ros-py==0.36.10
+tf2-sensor-msgs==0.36.10
+tf2-tools==0.36.10
+thop==0.1.1.post2209072238
+threadpoolctl @ file:///Users/ktietz/demo/mc3/conda-bld/threadpoolctl_1629802263681/work
+three-merge @ file:///tmp/build/80754af9/three-merge_1607553261110/work
+tifffile @ file:///work/perseverance-python-buildout/croot/tifffile_1698866341575/work
+tinycss2 @ file:///work/perseverance-python-buildout/croot/tinycss2_1698875051986/work
+tldextract==5.3.0
+toml @ file:///tmp/build/80754af9/toml_1616166611790/work
+tomli @ file:///work/perseverance-python-buildout/croot/tomli_1698805555176/work
+tomlkit @ file:///work/perseverance-python-buildout/croot/tomlkit_1698847005123/work
+toolz @ file:///work/perseverance-python-buildout/croot/toolz_1698846367152/work
+topic-monitor==0.33.5
+torch==2.4.1+cu118
+torchaudio==2.4.1+cu118
+torchvision==0.19.1+cu118
+tornado @ file:///croot/tornado_1718740109488/work
+tqdm @ file:///croot/tqdm_1716395931952/work
+traitlets @ file:///croot/traitlets_1718227057033/work
+trajectory-msgs==5.3.6
+transform3d==0.0.4
+transforms3d==0.4.2
+triton==3.0.0
+truststore @ file:///work/perseverance-python-buildout/croot/truststore_1701735771625/work
+turtle-tf2-py==0.5.0
+turtlesim==1.8.3
+Twisted @ file:///croot/twisted_1708702809815/work
+type-description-interfaces==2.0.2
+types-setuptools==71.1.0.20240818
+typing-inspection==0.4.0
+typing_extensions==4.13.2
+tzdata @ file:///croot/python-tzdata_1690578112552/work
+ua-parser==1.0.1
+ua-parser-builtins==0.18.0.post1
+uc-micro-py @ file:///work/perseverance-python-buildout/croot/uc-micro-py_1698875458503/work
+ujson @ file:///croot/ujson_1717597529825/work
+ultralytics @ git+https://github.com/THU-MIG/yolov10.git@453c6e38a51e9d1d5a2aa5fb7f1014a711913397
+unicodedata2 @ file:///croot/unicodedata2_1713212950228/work
+Unidecode @ file:///tmp/build/80754af9/unidecode_1614712377438/work
+unique-identifier-msgs==2.5.0
+uritemplate==4.1.1
+urllib3==1.26.20
+user-agents==2.2.0
+vision-msgs==4.1.1
+visualization-msgs==5.3.6
+w3lib @ file:///Users/ktietz/demo/mc3/conda-bld/w3lib_1629359764703/work
+watchdog @ file:///croot/watchdog_1717166512516/work
+wcwidth @ file:///Users/ktietz/demo/mc3/conda-bld/wcwidth_1629357192024/work
+webencodings @ file:///work/perseverance-python-buildout/croot/webencodings_1698866454420/work
+websocket-client @ file:///croot/websocket-client_1715878298792/work
+Werkzeug @ file:///croot/werkzeug_1716533313107/work
+whatthepatch @ file:///work/perseverance-python-buildout/croot/whatthepatch_1698866493803/work
+wheel==0.40.0
+widgetsnbextension==4.0.14
+wrapt @ file:///work/perseverance-python-buildout/croot/wrapt_1698851040578/work
+wurlitzer @ file:///work/perseverance-python-buildout/croot/wurlitzer_1698906481008/work
+xacro==2.0.13
+xarray @ file:///work/perseverance-python-buildout/croot/xarray_1698851063735/work
+xmljson==0.2.1
+xyzservices @ file:///work/perseverance-python-buildout/croot/xyzservices_1698866513675/work
+yapf @ file:///croot/yapf_1708964320665/work
+yarl @ file:///croot/yarl_1701105127787/work
+zict @ file:///work/perseverance-python-buildout/croot/zict_1698876364831/work
+zipp @ file:///work/perseverance-python-buildout/croot/zipp_1707367835224/work
+zope.interface @ file:///work/perseverance-python-buildout/croot/zope.interface_1698866533743/work
+zstandard @ file:///croot/zstandard_1714677652653/work

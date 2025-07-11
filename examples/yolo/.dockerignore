@@ -1,23 +1,39 @@
-# Exclude everything
-**
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
 
-# Include Dockerfile and docker-compose for reference (optional, decide based on your use case)
-!Dockerfile
-!docker-compose.yml
-
-# Include Python application files
-!*.py
-!*.yaml
-!tests/*
-!control_models/*
-!models/*
-!utils/*
-
-# Include requirements files
+# 数据和模型
+*.h5
+*.pkl
+*.pth
+*.pt
 !requirements*.txt
 
-# Include script
-!*.sh
+# 日志和缓存
+logs/
+cache/
+uncertainty_cache/
+cache_dir/
+*.log
 
-# Exclude specific requirements if necessary
-# requirements-test.txt (Uncomment if you decide to exclude this)
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Git
+.git/
+.gitignore
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 测试文件
+tests/
+*.test.py

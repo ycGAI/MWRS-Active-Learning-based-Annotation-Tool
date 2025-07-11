@@ -10,15 +10,11 @@ services:
     volumes:
       - ./label-studio-data:/label-studio/data
     environment:
-      # Label Studio 基础配置
       - LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED=true
       - LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=/label-studio/data/files
-      # 用户认证
       - LABEL_STUDIO_USERNAME=${LABEL_STUDIO_USERNAME:-admin@example.com}
       - LABEL_STUDIO_PASSWORD=${LABEL_STUDIO_PASSWORD:-password}
-      # API Token
       - LABEL_STUDIO_USER_TOKEN=${LABEL_STUDIO_API_KEY:-your-predefined-token-here}
-      # 启用ML Backend自动连接
       - LABEL_STUDIO_ML_BACKEND_V2=true
     restart: unless-stopped
     networks:
@@ -32,8 +28,12 @@ services:
 
   # YOLO ML Backend 增强版服务
   yolo:
-    build: .
-    image: heartexlabs/label-studio-ml-backend:yolo-enhanced
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - TEST_ENV=${TEST_ENV:-false}
+    image: yolo-ml-backend:latest
     container_name: yolo-enhanced
     ports:
       - "9090:9090"
@@ -47,7 +47,7 @@ services:
       
       # YOLO模型配置
       - ALLOW_CUSTOM_MODEL_PATH=true
-      - MODEL_SCORE_THRESHOLD=0.3  # 降低阈值以显示更多低置信度预测
+      - MODEL_SCORE_THRESHOLD=0.3
       - MODEL_CONF_THRESHOLD=0.25
       
       # 增强功能配置
@@ -66,7 +66,7 @@ services:
       - UNCERTAINTY_THRESHOLD=0.5
       - MIN_CONFIDENCE_FOR_TRAINING=0.3
       
-      # Redis配置（用于任务队列）
+      # Redis配置
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - RQ_QUEUE_NAME=default
@@ -75,24 +75,16 @@ services:
       - CACHE_TYPE=sqlite
       - CACHE_DIR=/app/cache_dir
       
-      # GPU支持（如果可用）
+      # GPU支持
       - NVIDIA_VISIBLE_DEVICES=all
       
     volumes:
-      # 原有挂载
       - ./models:/app/models
       - ./training_data:/app/training_data
       - ./cache:/app/cache
-      
-      # 增强功能挂载
       - ./uncertainty_cache:/app/uncertainty_cache
       - ./cache_dir:/app/cache_dir
-      
-      # 增强版代码挂载（开发时使用）
       - ./control_models:/app/control_models:ro
-      - ./ml_backend_enhanced.py:/app/ml_backend.py:ro
-      
-      # 共享Label Studio数据（用于访问上传的图片）
       - ./label-studio-data:/label-studio/data:ro
       
     restart: unless-stopped
@@ -107,16 +99,16 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    # GPU运行时（如果可用，取消注释）
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: 1
-    #           capabilities: [gpu]
+    # GPU 支持（如果有 GPU）
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
-  # Redis服务（用于任务队列和缓存）
+  # Redis服务
   redis:
     image: redis:7-alpine
     container_name: redis-ml
@@ -131,21 +123,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-
-  # 可选：Nginx反向代理（统一访问入口）
-  # nginx:
-  #   image: nginx:alpine
-  #   container_name: nginx-proxy
-  #   ports:
-  #     - "80:80"
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
-  #   depends_on:
-  #     - label-studio
-  #     - yolo
-  #   networks:
-  #     - label-studio-network
-  #   restart: unless-stopped
 
 networks:
   label-studio-network:

@@ -1,0 +1,2 @@
+Python 3.10.13
+pip 23.3.1 from /opt/conda/lib/python3.10/site-packages/pip (python 3.10)

@@ -1,0 +1,26 @@
+total 144
+drwxr-xr-x 1 root root  4096 Jul  7 20:00 .
+drwxr-xr-x 1 root root  4096 Jul  7 20:00 ..
+-rw-rw-r-- 1 root root  1941 Jul  2 12:56 Dockerfile
+-rw-rw-r-- 1 root root     0 Jul  2 12:56 __init__.py
+-rw-rw-r-- 1 root root  4017 Jul  2 12:56 _wsgi.py
+-rw-rw-r-- 1 root root 23305 Jul  7 09:18 analyze_confidence_iou_correlation.py
+drwxr-xr-x 2 root root  4096 Jul  2 18:51 cache
+drwxr-xr-x 2 root root  4096 Jul  7 10:53 cache_dir
+-rw-rw-r-- 1 root root  5013 Jul  2 12:56 cli.py
+drwxrwxr-x 2 1000 1000  4096 Jul  7 10:38 control_models
+-rw-rw-r-- 1 root root  4296 Jul  7 10:51 docker-compose.yml
+-rw-rw-r-- 1 1000 1000  5410 Jul  7 10:39 ml_backend.py
+-rw-rw-r-- 1 root root  5410 Jul  7 10:39 ml_backend_enhanced.py
+-rw-rw-r-- 1 root root  5963 Jul  2 12:56 model copy.py
+-rw-rw-r-- 1 root root  8500 Jul  7 19:19 model.py
+drwxrwxr-x 3 1000 1000  4096 Jul 11 17:41 models
+-rw-rw-r-- 1 root root    66 Jul  2 12:56 requirements copy.txt
+-rw-rw-r-- 1 root root   180 Jul  2 12:56 requirements-base.txt
+-rw-rw-r-- 1 root root    29 Jul  2 12:56 requirements-test.txt
+-rw-rw-r-- 1 root root   436 Jul  2 12:56 requirements.txt
+-rwxrwxr-x 1 root root   150 Jul  2 12:56 start.sh
+drwxrwxr-x 2 root root  4096 Jul  2 12:56 tests
+drwxrwxr-x 3 1000 1000  4096 Jul  2 20:28 training_data
+drwxrwxr-x 2 1000 1000  4096 Jul  7 10:52 uncertainty_cache
+drwxrwxr-x 2 root root  4096 Jul  2 12:56 utils

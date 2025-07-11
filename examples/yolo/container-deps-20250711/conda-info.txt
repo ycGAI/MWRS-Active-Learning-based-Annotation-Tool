@@ -1,0 +1,30 @@
+
+     active environment : None
+       user config file : /root/.condarc
+ populated config files : 
+          conda version : 25.5.1
+    conda-build version : 25.5.0
+         python version : 3.10.13.final.0
+                 solver : libmamba (default)
+       virtual packages : __archspec=1=zen3
+                          __conda=25.5.1=0
+                          __glibc=2.31=0
+                          __linux=6.8.0=0
+                          __unix=0=0
+       base environment : /opt/conda  (writable)
+      conda av data dir : /opt/conda/etc/conda
+  conda av metadata url : None
+           channel URLs : https://repo.anaconda.com/pkgs/main/linux-64
+                          https://repo.anaconda.com/pkgs/main/noarch
+                          https://repo.anaconda.com/pkgs/r/linux-64
+                          https://repo.anaconda.com/pkgs/r/noarch
+          package cache : /opt/conda/pkgs
+                          /root/.conda/pkgs
+       envs directories : /opt/conda/envs
+                          /root/.conda/envs
+               platform : linux-64
+             user-agent : conda/25.5.1 requests/2.32.4 CPython/3.10.13 Linux/6.8.0-63-generic ubuntu/20.04.6 glibc/2.31 solver/libmamba conda-libmamba-solver/25.4.0 libmambapy/2.0.5
+                UID:GID : 0:0
+             netrc file : None
+           offline mode : False
+

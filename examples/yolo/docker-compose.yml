@@ -10,11 +10,15 @@ services:
     volumes:
       - ./label-studio-data:/label-studio/data
     environment:
+      # Label Studio 基础配置
       - LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED=true
       - LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=/label-studio/data/files
+      # 用户认证
       - LABEL_STUDIO_USERNAME=${LABEL_STUDIO_USERNAME:-admin@example.com}
       - LABEL_STUDIO_PASSWORD=${LABEL_STUDIO_PASSWORD:-password}
+      # API Token
       - LABEL_STUDIO_USER_TOKEN=${LABEL_STUDIO_API_KEY:-your-predefined-token-here}
+      # 启用ML Backend自动连接
       - LABEL_STUDIO_ML_BACKEND_V2=true
     restart: unless-stopped
     networks:
@@ -32,8 +36,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - TEST_ENV=${TEST_ENV:-false}
-    image: yolo-ml-backend:latest
+        TEST_ENV: ${TEST_ENV:-false}
+    image: heartexlabs/label-studio-ml-backend:yolo-enhanced
     container_name: yolo-enhanced
     ports:
       - "9090:9090"
@@ -47,26 +51,26 @@ services:
       
       # YOLO模型配置
       - ALLOW_CUSTOM_MODEL_PATH=true
-      - MODEL_SCORE_THRESHOLD=0.3
-      - MODEL_CONF_THRESHOLD=0.25
+      - MODEL_SCORE_THRESHOLD=${MODEL_SCORE_THRESHOLD:-0.3}
+      - MODEL_CONF_THRESHOLD=${MODEL_CONF_THRESHOLD:-0.25}
       
       # 增强功能配置
-      - ENABLE_ENHANCED_FEATURES=true
-      - MODEL_SHOW_CONFIDENCE=true
-      - MODEL_ENABLE_FINETUNE=true
-      - MODEL_PRIORITIZE_UNCERTAIN=true
-      - MODEL_MIN_ANNOTATIONS=10
-      - MODEL_RETRAIN_INTERVAL=5
-      - MODEL_FINETUNE_EPOCHS=20
-      - MODEL_FINETUNE_BATCH=8
-      - MODEL_FINETUNE_LR=0.001
-      - MODEL_FINETUNE_PATIENCE=5
+      - ENABLE_ENHANCED_FEATURES=${ENABLE_ENHANCED_FEATURES:-true}
+      - MODEL_SHOW_CONFIDENCE=${MODEL_SHOW_CONFIDENCE:-true}
+      - MODEL_ENABLE_FINETUNE=${MODEL_ENABLE_FINETUNE:-true}
+      - MODEL_PRIORITIZE_UNCERTAIN=${MODEL_PRIORITIZE_UNCERTAIN:-true}
+      - MODEL_MIN_ANNOTATIONS=${MODEL_MIN_ANNOTATIONS:-10}
+      - MODEL_RETRAIN_INTERVAL=${MODEL_RETRAIN_INTERVAL:-5}
+      - MODEL_FINETUNE_EPOCHS=${MODEL_FINETUNE_EPOCHS:-20}
+      - MODEL_FINETUNE_BATCH=${MODEL_FINETUNE_BATCH:-8}
+      - MODEL_FINETUNE_LR=${MODEL_FINETUNE_LR:-0.001}
+      - MODEL_FINETUNE_PATIENCE=${MODEL_FINETUNE_PATIENCE:-5}
       
       # 不确定性采样配置
-      - UNCERTAINTY_THRESHOLD=0.5
-      - MIN_CONFIDENCE_FOR_TRAINING=0.3
+      - UNCERTAINTY_THRESHOLD=${UNCERTAINTY_THRESHOLD:-0.5}
+      - MIN_CONFIDENCE_FOR_TRAINING=${MIN_CONFIDENCE_FOR_TRAINING:-0.3}
       
-      # Redis配置
+      # Redis配置（用于任务队列）
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - RQ_QUEUE_NAME=default
@@ -75,16 +79,24 @@ services:
       - CACHE_TYPE=sqlite
       - CACHE_DIR=/app/cache_dir
       
-      # GPU支持
+      # GPU支持（如果可用）
       - NVIDIA_VISIBLE_DEVICES=all
       
     volumes:
+      # 原有挂载
       - ./models:/app/models
       - ./training_data:/app/training_data
       - ./cache:/app/cache
+      
+      # 增强功能挂载
       - ./uncertainty_cache:/app/uncertainty_cache
       - ./cache_dir:/app/cache_dir
+      
+      # 增强版代码挂载（开发时使用）
       - ./control_models:/app/control_models:ro
+      - ./ml_backend_enhanced.py:/app/ml_backend.py:ro
+      
+      # 共享Label Studio数据（用于访问上传的图片）
       - ./label-studio-data:/label-studio/data:ro
       
     restart: unless-stopped
@@ -99,16 +111,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    # GPU 支持（如果有 GPU）
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
 
-  # Redis服务
+  # Redis服务（用于任务队列和缓存）
   redis:
     image: redis:7-alpine
     container_name: redis-ml

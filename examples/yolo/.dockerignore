@@ -12,7 +12,7 @@ env/
 *.pkl
 *.pth
 *.pt
-!requirements*.txt
+
 
 # 日志和缓存
 logs/

@@ -1,23 +1,122 @@
-# 基础依赖（保持原有）
-label-studio-ml @ git+https://github.com/HumanSignal/label-studio-ml-backend.git
-ultralytics>=8.0.0
-torch>=1.13.0
-torchvision>=0.14.0
-opencv-python-headless>=4.5.0
-Pillow>=8.3.0
+# 核心ML框架
+torch==2.1.2
+torchaudio==2.1.2
+torchelastic==0.2.2
+torchmetrics==1.7.3
+torchvision==0.16.2
 
-# 修复NumPy版本兼容性
-numpy<2.0.0
+# 计算机视觉和图像处理
+matplotlib==3.10.3
+opencv-python-headless==4.11.0.86
+opencv-python==4.11.0.86
+pillow==10.4.0
+seaborn==0.13.2
+ultralytics-thop==2.0.14
+ultralytics==8.3.162
 
-# 添加缺失的依赖
-torchmetrics>=0.10.0
+# 数据处理
+numpy==1.26.4
+pandas==2.3.0
+scipy==1.15.3
 
-# 微调训练额外依赖
-PyYAML>=6.0
-matplotlib>=3.5.0
-seaborn>=0.11.0
-tensorboard>=2.8.0
-clearml>=1.6.0
+# 从file://转换的依赖
+Jinja2==3.1.5
+MarkupSafe==3.0.3
+PyYAML==6.0.2
+Pygments==2.19.1
+attrs==25.1.0
+beautifulsoup4==4.12.3
+certifi==2025.7.22
+cffi==1.18.1
+charset-normalizer==3.4.1
+click==8.1.8
+cryptography==45.0.0
+filelock==3.17.0
+idna==3.10
+jsonschema==4.25.1
+mpmath==1.3.0
+packaging==25.0
+platformdirs==4.5.0
+psutil==6.1.1
+pycparser==2.24
+pytz==2025.1
+requests==2.32.3
+soupsieve==2.6
+sympy==1.14.0
+tqdm==4.67.2
+typing_extensions==4.13.0
+urllib3==2.3.0
 
-# 性能优化
-psutil>=5.8.0
+# 其他依赖
+Faker==37.4.0
+Flask==3.1.1
+Markdown==3.8.2
+PyJWT==2.10.1
+Werkzeug==3.1.3
+absl-py==2.3.1
+annotated-types==0.7.0
+anyio==4.9.0
+appdirs==1.4.4
+argcomplete==3.6.2
+astunparse==1.6.3
+black==25.1.0
+blinker==1.9.0
+clearml==2.0.1
+colorama==0.4.6
+contourpy==1.3.2
+cycler==0.12.1
+datamodel-code-generator==0.26.1
+dnspython==2.4.2
+email_validator==2.2.0
+expecttest==0.1.6
+fonttools==4.58.5
+fsspec==2023.12.2
+furl==2.1.4
+genson==1.3.0
+grpcio==1.73.1
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+hypothesis==6.92.0
+ijson==3.4.0
+inflect==5.6.2
+isort==5.13.2
+itsdangerous==2.2.0
+joblib==1.5.1
+jsf==0.11.2
+jsonpointer==2.1
+kiwisolver==1.4.8
+lightning-utilities==0.14.3
+lxml==6.0.0
+mkl-service==2.4.0
+mypy_extensions==1.1.0
+networkx==3.2.1
+nltk==3.9.1
+orderedmultidict==1.0.1
+pathlib2==2.3.7.post1
+pathspec==0.12.1
+protobuf==6.31.1
+py-cpuinfo==9.0.0
+pydantic==2.11.7
+pydantic_core==2.33.2
+pyparsing==3.2.3
+python-dateutil==2.9.0.post0
+python-etcd==0.4.5
+regex==2024.11.6
+requests-mock==1.12.1
+rstr==3.2.2
+semver==3.0.4
+six==1.17.0
+smart_open==7.3.0.post1
+sniffio==1.3.1
+sortedcontainers==2.4.0
+tensorboard-data-server==0.7.2
+tensorboard==2.19.0
+toml==0.10.2
+triton==2.1.0
+types-dataclasses==0.6.6
+typing-inspection==0.4.1
+tzdata==2025.2
+ujson==5.10.0
+wrapt==1.17.2
+xmljson==0.2.1

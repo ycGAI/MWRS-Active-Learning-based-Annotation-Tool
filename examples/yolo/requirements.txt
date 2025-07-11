@@ -1,23 +1,34 @@
-# 基础依赖（保持原有）
-label-studio-ml @ git+https://github.com/HumanSignal/label-studio-ml-backend.git
-ultralytics>=8.0.0
-torch>=1.13.0
-torchvision>=0.14.0
-opencv-python-headless>=4.5.0
-Pillow>=8.3.0
+###########################
+# Label Studio 生态
+###########################
+# 与 LS 1.6.0 配套的稳定版，内部依赖 label-studio-sdk 0.0.44 + scikit-learn 0.24.1
+label-studio-ml==1.0.2         
 
-# 修复NumPy版本兼容性
-numpy<2.0.0
+###########################
+# YOLO / Ultralytics
+###########################
+# 8.3.159 已在官方 issue 验证可直接跑 Torch 2.1.*，且没有多余依赖冲突
+ultralytics==8.3.159            
 
-# 添加缺失的依赖
-torchmetrics>=0.10.0
+###########################
+# 计算机视觉工具
+###########################
+opencv-python-headless>=4.9     
+# Label-Studio-ML 1.0.2 仍在用 Pillow〈10.3，避免冲突先锁一下上界
+Pillow>=8.3,<10.3               
 
-# 微调训练额外依赖
+###########################
+# 科学计算 & 指标
+###########################
+numpy<2.0.0                     # 避免旧 SciPy / scikit-learn 编译问题
+torchmetrics>=0.10.0            # 和 torch>=1.7.0 皆兼容
+
+###########################
+# 训练 / 可视化辅助
+###########################
 PyYAML>=6.0
 matplotlib>=3.5.0
 seaborn>=0.11.0
 tensorboard>=2.8.0
 clearml>=1.6.0
-
-# 性能优化
 psutil>=5.8.0

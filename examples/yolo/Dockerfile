@@ -1,62 +1,64 @@
+# ──────────────────────────────── ① 基础镜像 ────────────────────────────────
 FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-runtime
-ARG DEBIAN_FRONTEND=noninteractive
-ARG TEST_ENV
 
+ARG DEBIAN_FRONTEND=noninteractive
+ARG TEST_ENV=false          # 构建时可传 --build-arg TEST_ENV=true
+
+# ──────────────────────────────── ② 工作目录 ────────────────────────────────
 WORKDIR /app
 
-RUN conda update conda -y
+# ─────────────────────── ③ conda + Python 3.8 虚拟环境 ──────────────────────
+RUN conda update -y conda && \
+    conda create -y -n yolo python=3.8 && \
+    conda clean -afy
+SHELL ["conda", "run", "-n", "yolo", "/bin/bash", "-c"]
 
-RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
-    --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
-    apt-get -y update \
-    && apt-get install -y git \
-    && apt-get install -y wget \
-    && apt-get install -y curl \
-    && apt-get install -y g++ freeglut3-dev build-essential libx11-dev \
-    libxmu-dev libxi-dev libglu1-mesa libglu1-mesa-dev libfreeimage-dev \
-    && apt-get -y install ffmpeg libsm6 libxext6 libffi-dev python3-dev python3-pip gcc
+# ───────────────────────────── ④ 系统依赖 ─────────────────────────────
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
+        git wget curl build-essential g++ \
+        ffmpeg libsm6 libxext6 libffi-dev python3-dev gcc && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# ──────────────────── ⑤ 预装 scikit-learn 0.24.1 ────────────────────
+RUN conda install -y scikit-learn=0.24.1 && conda clean -afy
+
+# ⑤½ 预装官方 cu121 wheel，避免 PyPI 依赖炸裂
+RUN pip install --no-cache-dir \
+      torch==2.1.2+cu121 \
+      torchvision==0.16.2+cu121 \
+      torchaudio==2.1.2+cu121 \
+      --index-url https://download.pytorch.org/whl/cu121
+
+# 把启动脚本放进镜像并赋 +x
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+
+# ───────────────────────────── ⑥ Python 依赖 ─────────────────────────────
+ENV PIP_CACHE_DIR=/.cache
+COPY requirements-base.txt .
+RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
+    pip install --no-cache-dir -r requirements-base.txt
+
+COPY requirements.txt .
+RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
+    pip install --no-cache-dir -r requirements.txt
+
+COPY requirements-test.txt .
+RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
+    if [ "$TEST_ENV" = "true" ]; then pip install --no-cache-dir -r requirements-test.txt ; fi
+
+# ───────────────────────────── ⑦ 拷贝代码 ─────────────────────────────
+COPY . .
+
+# ───────────────────────────── ⑧ 运行参数 ─────────────────────────────
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PIP_CACHE_DIR=/.cache \
     PORT=9090 \
     WORKERS=2 \
     THREADS=4 \
-    CUDA_HOME=/usr/local/cuda
+    PYTHONPATH=/app
 
-ENV CUDA_HOME=/opt/conda \
-    TORCH_CUDA_ARCH_LIST="6.0;6.1;7.0;7.5;8.0;8.6+PTX;8.9;9.0"
-
-# install base requirements
-COPY requirements-base.txt .
-RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
-    pip install -r requirements-base.txt
-
-# install model requirements
-COPY requirements.txt .
-RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
-    pip3 install -r requirements.txt
-
-# install test requirements if needed
-COPY requirements-test.txt .
-# build only when TEST_ENV="true"
-RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
-    if [ "$TEST_ENV" = "true" ]; then \
-      pip3 install -r requirements-test.txt; \
-    fi
-
-WORKDIR /app
-
-COPY . ./
-
-# Download the YOLO models
-RUN /bin/sh -c 'if [ ! -f /app/models/yolov8m.pt ]; then \
-    yolo predict model=/app/models/yolov8m.pt source=/app/tests/car.jpg \
-    && yolo predict model=/app/models/yolov8n.pt source=/app/tests/car.jpg \
-    && yolo predict model=/app/models/yolov8n-cls.pt source=/app/tests/car.jpg \
-    && yolo predict model=/app/models/yolov8n-seg.pt source=/app/tests/car.jpg; \
-    fi'
-
-ENV PYTHONPATH=/app
-
-CMD ["/app/start.sh"]
+CMD ["conda", "run", "-n", "yolo", "/app/start.sh"]

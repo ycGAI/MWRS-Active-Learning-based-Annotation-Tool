@@ -1,3 +1,20 @@
+# ---- 先把 Flask 及其 3 个核心依赖锁死 ----
+Flask==1.1.4          # label-studio-ml 1.x 默认就是这条
+Werkzeug<2            # Flask 1.x 需要 <2
+Jinja2<3              # Flask 1.x 需要 <3
+itsdangerous==1.1.0   # Flask 1.x 需要 <2.0 且 1.1.0 最稳定
+# -------------------------------------------
+
 gunicorn==23.0.0
-label-studio-ml @ git+https://github.com/HumanSignal/label-studio-ml-backend.git@v1.0.2
-label-studio-sdk==1.0.2
+
+# —— Label-Studio 1.6.0 生态 ——
+label-studio==1.6.0
+label-studio-ml==1.0.2
+label-studio-sdk==0.0.34     # 兼容 Py3.8，API 与 1.6.* 对口
+pydantic==1.8.2              # LS 1.6.0 硬依赖
+jsonschema==3.2.0            # LS 1.6.0 硬依赖
+psycopg2-binary==2.9.1       # 跟 LS requirements.txt 一致
+
+cython>=0.29.32               # 给 label-studio-ml 编译时用
+# 兼容 Flask 1.1.2 ──★
+jinja2<3.1

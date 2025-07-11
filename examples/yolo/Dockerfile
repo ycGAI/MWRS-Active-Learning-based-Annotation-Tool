@@ -35,17 +35,10 @@ ENV PYTHONUNBUFFERED=1 \
 # 升级 pip
 RUN pip install --upgrade pip
 
-# 复制所有 requirements 文件
-COPY requirements*.txt ./
-COPY clean_requirements.py ./
+# 复制 requirements 文件
+COPY requirements-base.txt requirements.txt requirements-clean.txt requirements-test.txt* ./
 
-# 清理 requirements-lock.txt（如果存在）
-RUN if [ -f requirements-lock.txt ]; then \
-        python clean_requirements.py && \
-        mv requirements-clean.txt requirements-lock.txt; \
-    fi
-
-# 安装依赖（按顺序）
+# 安装依赖（按优先级）
 # 1. 基础依赖
 RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
     if [ -f requirements-base.txt ]; then \
@@ -58,11 +51,9 @@ RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
         pip install -r requirements.txt; \
     fi
 
-# 3. 使用锁定版本（如果存在）
+# 3. 使用清理后的完整依赖列表（确保版本一致性）
 RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
-    if [ -f requirements-lock.txt ]; then \
-        pip install --no-deps -r requirements-lock.txt; \
-    fi
+    pip install --no-deps -r requirements-clean.txt || true
 
 # 4. 测试依赖（仅在测试环境）
 RUN --mount=type=cache,target=${PIP_CACHE_DIR},sharing=locked \
@@ -82,10 +73,12 @@ RUN python -c "from ultralytics import YOLO; \
     import os; \
     models = ['yolov8n.pt', 'yolov8m.pt', 'yolov8n-cls.pt', 'yolov8n-seg.pt']; \
     for model in models: \
-        if not os.path.exists(f'/app/models/{model}'): \
+        model_path = f'/app/models/{model}'; \
+        if not os.path.exists(model_path): \
+            print(f'Downloading {model}...'); \
             YOLO(model)"
 
-# 设置权限
+# 设置执行权限
 RUN chmod +x /app/start.sh || true
 
 # 设置 Python 路径

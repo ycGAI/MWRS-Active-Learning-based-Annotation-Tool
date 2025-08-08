@@ -1,35 +1,69 @@
-YOLO Model Confidence vs Bounding Box Quality Correlation Analysis Report
-==================================================
+======================================================================
+YOLO Model Comprehensive Analysis Report
+======================================================================
 
-Analysis time: 2025-07-07 11:20:55.204797
+Analysis timestamp: 2025-08-08 15:58:59.267867
 Model path: /home/gyc/MWRS-Active-Learning-based-Annotation-Tool/examples/yolo/models/best.pt
-Number of test images: 5173
-Total predictions: 9540
-Successfully matched: 7169
+Number of test images: 748
+Total predictions: 1113
+Successfully matched: 956
 
-Correlation Analysis Results:
-- Pearson correlation coefficient: 0.5499 (p-value: 0.0000e+00)
-- Spearman correlation coefficient: 0.5845 (p-value: 0.0000e+00)
-- Correlation strength: moderate positive correlation
+======================================================================
+1. CONFIDENCE-IoU CORRELATION ANALYSIS
+======================================================================
+Pearson correlation: 0.5273 (p=1.6050e-69)
+Spearman correlation: 0.5805 (p=3.2114e-87)
+Correlation strength: moderate positive
 
-Statistical Summary:
-- Mean confidence: 0.7839 ± 0.1871
-- Mean IoU: 0.8608 ± 0.1264
+======================================================================
+2. CLASSIFICATION PERFORMANCE METRICS
+======================================================================
 
-Performance by Class:
-                    confidence                 iou           matched
-                          mean       std      mean       std   count
-class                                                               
-armeria-maritima      0.804269  0.136991  0.857912  0.104535    1105
-centaurea-jacea       0.850537  0.136210  0.879986  0.099367     981
-cirsium-oleraceum     0.850835  0.141729  0.898422  0.096642     986
-daucus-carota         0.681896  0.216942  0.825678  0.149980    2398
-knautia-arvensis      0.846980  0.158132  0.887358  0.117204    1030
-lychnis-flos-cuculi   0.822503  0.147314  0.867393  0.122296     669
+Per-Class Performance:
+----------------------------------------------------------------------
+Class                Precision    Recall       F1 Score     Support   
+----------------------------------------------------------------------
+armeria-maritima     0.922        0.957        0.939        161       
+centaurea-jacea      0.890        0.963        0.925        135       
+cirsium-oleraceum    0.891        0.924        0.907        132       
+daucus-carota        0.766        0.721        0.742        426       
+knautia-arvensis     0.940        0.928        0.934        153       
+lychnis-flos-cuculi  0.910        0.886        0.898        114       
+----------------------------------------------------------------------
 
-Conclusion:
-Based on the analysis of 7169 samples, the results show that there is
-a significant moderate positive correlation (r=0.550, p<0.001) between YOLO model confidence
-and bounding box quality (IoU). This proves that the model's confidence score
-effectively reflects the accuracy of its bounding box predictions. Higher confidence
-predictions typically have better localization accuracy.
+Macro Average:
+  Precision: 0.886
+  Recall: 0.896
+  F1 Score: 0.891
+
+Detection Statistics:
+  True Positives: 956
+  False Positives: 157
+  False Negatives: 165
+
+======================================================================
+3. CONFUSION MATRIX SUMMARY
+======================================================================
+
+Top Confusions:
+  daucus-carota → background: 119 times (27.9%)
+  lychnis-flos-cuculi → background: 12 times (10.5%)
+  knautia-arvensis → background: 9 times (5.9%)
+  cirsium-oleraceum → background: 8 times (6.1%)
+  armeria-maritima → background: 7 times (4.3%)
+
+======================================================================
+4. CONCLUSIONS
+======================================================================
+
+The analysis of 956 matched predictions shows:
+
+• Confidence-IoU Correlation: moderate positive correlation (r=0.527)
+  This indicates that model confidence reflects
+  the quality of bounding box predictions.
+
+• Classification Performance: Macro F1 Score of 0.891
+  Best performing class: armeria-maritima (F1=0.939)
+  Worst performing class: daucus-carota (F1=0.742)
+
+• The model tends to under-detect (more false negatives than false positives)
